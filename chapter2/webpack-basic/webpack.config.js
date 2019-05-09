@@ -1,4 +1,5 @@
 const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 // webpack的配置文件遵循着CommonJS规范
 module.exports = {
@@ -19,6 +20,38 @@ module.exports = {
     hot: true,
     compress: true,
     port: 3000,
-    contentBase: './src'
+    // contentBase: './src'
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: './src/index.html'
+    })
+  ],
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        // webpack读取loader时 是从右到左的读取, 会将css文件先交给最右侧的loader来处理
+        // loader的执行顺序是从右到左以管道的方式链式调用
+        // css-loader: 解析css文件
+        // style-loader: 将解析出来的结果 放到html中, 使其生效
+        use: ['style-loader', 'css-loader']
+      },
+      { test: /\.less$/, use: ['style-loader', 'css-loader', 'less-loader'] },
+      { test: /\.s(a|c)ss$/, use: ['style-loader', 'css-loader', 'sass-loader'] },
+      {
+        test: /\.(jpg|jpeg|png|bmp|gif)$/,
+        use: {
+          loader: 'url-loader',
+          options: {
+            limit: 5 * 1024,
+            outputPath: 'images',
+            name: '[name]-[hash:4].[ext]'
+          }
+        }
+      },
+      { test: /\.(woff|woff2|eot|svg|ttf)$/, use: 'url-loader' },
+    ]
   }
 }
