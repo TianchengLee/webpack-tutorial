@@ -322,7 +322,7 @@ loader的释义:
 
 1. `npm i file-loader url-loader -D`
 
-url-loader封装了file-loader
+url-loader封装了file-loader, 所以使用url-loader时需要安装file-loader
 
 ```js
 {
@@ -330,8 +330,12 @@ url-loader封装了file-loader
     use: [{
         loader: 'url-loader',
         options: {
-          // limit表示如果图片大于5KB，就以路径形式展示，小于的话就用base64格式展示
-            limit: 5 * 1024
+            // limit表示如果图片大于5KB，就以路径形式展示，小于的话就用base64格式展示
+            limit: 5 * 1024,
+            // 打包输出目录
+            outputPath: 'images',
+            // 打包输出图片名称
+            name: '[name]-[hash:4].[ext]'
         }
     }]
 }

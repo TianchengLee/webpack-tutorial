@@ -13,6 +13,9 @@ import './less/index.less'
 // 引入sass
 import './scss/index.scss'
 
+// 引入bootstrap的css文件
+import 'bootstrap/dist/css/bootstrap.css'
+
 console.log(a)
 console.log('黑马程序员真牛逼!')
 console.log('黑马程序员真牛逼! 是的牛逼!!!')
