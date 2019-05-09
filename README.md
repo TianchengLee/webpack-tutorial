@@ -237,6 +237,10 @@ plugins: [
 ]
 ```
 
+1. devServer时根据模板在express项目根目录下生成html文件(类似于devServer生成内存中的bundle.js)
+2. devServer时自动引入bundle.js
+3. 打包时会自动生成index.html
+
 #### webpack-dev-middleware
 
 `webpack-dev-middleware` 是一个容器(wrapper)，它可以把 webpack 处理后的文件传递给一个服务器(server)。 `webpack-dev-server` 在内部使用了它，同时，它也可以作为一个单独的包来使用，以便进行更多自定义设置来实现更多的需求。
@@ -251,6 +255,7 @@ plugins: [
    const express = require('express');
    const webpack = require('webpack');
    const webpackDevMiddleware = require('webpack-dev-middleware');
+   const config = require('./webpack.config.js');
    
    const app = express();
    const compiler = webpack(config);
@@ -268,11 +273,20 @@ plugins: [
 
 4. 运行: `npm run server`
 
-接下来我们需要对 webpack 的配置文件做一些调整，以确保中间件(middleware)功能能够正确启用：
+注意: 如果要使用`webpack-dev-middleware`, 必须使用`html-webpack-plugin`插件, 否则html文件无法正确的输出到express服务器的根目录
+
+#### 小结
+
+只有在开发时才需要使用自动编译工具, 例如: webpack-dev-server
+
+项目上线时都会直接使用webpack进行打包构建, 不需要使用这些自动编译工具
+
+自动编译工具只是为了**提高开发体验**
 
 ### 处理css
 
 1. 安装`npm i css-loader style-loader -D`
+2. 配置`webpack.config.js`
 
 ```js
   module: {
@@ -286,6 +300,11 @@ plugins: [
     ]
   }
 ```
+
+loader的释义:
+
+1. css-loader: 解析css文件
+2. style-loader: 将解析出来的结果 放到html中, 使其生效
 
 ### 处理less 和 sass
 
