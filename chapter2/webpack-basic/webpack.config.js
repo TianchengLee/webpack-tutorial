@@ -52,6 +52,15 @@ module.exports = {
         }
       },
       { test: /\.(woff|woff2|eot|svg|ttf)$/, use: 'url-loader' },
+      {
+        test: /\.js$/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/env']
+          }
+        }
+      }
     ]
   }
 }

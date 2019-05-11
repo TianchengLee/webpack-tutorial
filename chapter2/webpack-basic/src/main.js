@@ -27,3 +27,22 @@ window.onload = function() {
   document.querySelector('ul').style.listStyle = 'none'
   document.querySelector('li').style.backgroundColor = 'yellow'
 }
+
+setTimeout(function() {
+  // 如果是function 内部this直接指向window
+  console.log('没用箭头函数, 一秒后我执行了')
+}, 1000)
+
+setTimeout(() => {
+  console.log('我是用了箭头函数的setTimeout')
+}, 1000)
+
+// ES6提供了class关键字 是原型的语法糖
+class Person {
+  constructor (name) {
+    this.name = name
+  }
+}
+
+let p = new Person('小黑')
+console.log(p)
