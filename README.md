@@ -410,6 +410,144 @@ url-loader封装了file-loader, 所以使用url-loader时需要安装file-loader
 
 ​	`import '@babel/polyfill'`
 
+### source map的使用
+
+#### devtool
+
+此选项控制是否生成，以及如何生成 source map。
+
+使用 [`SourceMapDevToolPlugin`](https://www.webpackjs.com/plugins/source-map-dev-tool-plugin) 进行更细粒度的配置。查看 [`source-map-loader`](https://www.webpackjs.com/loaders/source-map-loader) 来处理已有的 source map。
+
+选择一种 [source map](http://blog.teamtreehouse.com/introduction-source-maps) 格式来增强调试过程。不同的值会明显影响到构建(build)和重新构建(rebuild)的速度。
+
+> 可以直接使用 `SourceMapDevToolPlugin`/`EvalSourceMapDevToolPlugin` 来替代使用 `devtool` 选项，它有更多的选项，但是切勿同时使用 `devtool` 选项和 `SourceMapDevToolPlugin`/`EvalSourceMapDevToolPlugin` 插件。因为`devtool` 选项在内部添加过这些插件，所以会应用两次插件。
+
+| devtool | 构建速度 | 重新构建速度 | 生产环境 | 品质(quality) |
+| ------- | -------- | ------------ | -------- | ------------- |
+| (none)        | +++         | +++             | yes         | 打包后的代码              |
+| eval        | +++         |  +++            | no         |   生成后的代码            |
+| cheap-eval-source-map        |+          | ++             | no         |  转换过的代码（仅限行）             |
+| cheap-module-eval-source-map        | o         |++              | no         |  原始源代码（仅限行）             |
+| eval-source-map        | --         | +             |  no        |  原始源代码             |
+| cheap-source-map        | +         | o             |no          | 转换过的代码（仅限行）              |
+| cheap-module-source-map        | o         | -             |  no        | 原始源代码（仅限行）              |
+| inline-cheap-source-map        | +         | o             | no         | 转换过的代码（仅限行）              |
+| inline-cheap-module-source-map        |  o        | -             |  no        |  原始源代码（仅限行）             |
+|source-map         | --         | --             | yes         |  原始源代码             |
+| inline-source-map        | --         | --             | no         | 原始源代码              |
+| hidden-source-map        |  --        | --             | yes         | 原始源代码              |
+| nosources-source-map        |  --        | --             | yes         | 无源代码内容              |
+
+#### 这么多模式用哪个好？
+
+开发环境推荐：
+
+​	**cheap-module-eval-source-map**
+
+生产环境推荐：
+
+​	**none(不使用source map)**
+
+原因如下：
+
+1. **使用 cheap 模式可以大幅提高 soure map 生成的效率。**大部分情况我们调试并不关心列信息，而且就算 source map 没有列，有些浏览器引擎（例如 v8） 也会给出列信息。
+2. **使用 module 可支持 babel 这种预编译工具，映射转换前的代码**。
+3. **使用 eval 方式可大幅提高持续构建效率。**官方文档提供的速度对比表格可以看到 eval 模式的重新构建速度都很快。
+4. **使用 eval-source-map 模式可以减少网络请求。**这种模式开启 DataUrl 本身包含完整 sourcemap 信息，并不需要像 sourceURL 那样，浏览器需要发送一个完整请求去获取 sourcemap 文件，这会略微提高点效率。而生产环境中则不宜用 eval，这样会让文件变得极大。
+
+### 插件
+
+#### clean-webpack-plugin
+
+该插件在`npm run build`时自动清除`dist`目录后重新生成，非常方便
+
+1. 安装插件
+
+   `npm i clean-webpack-plugin -D`
+
+2. 引入插件
+
+   ```js
+   const CleanWebpackPlugin = require('clean-webpack-plugin')
+   ```
+
+3. 使用插件, 在plugins中直接创建对象即可
+
+   ```js
+   plugins: [
+       new HtmlWebpackPlugin({
+         filename: 'index.html',
+         template: './src/index.html'
+       }),
+       new CleanWebpackPlugin()
+     ],
+   ```
+
+#### copy-webpack-plugin
+
+1. 安装插件
+
+   `npm i copy-webpack-plugin -D`
+
+2. 引入插件
+
+   ```js
+   const CopyWebpackPlugin = require('copy-webpack-plugin')
+   ```
+
+3. 使用插件, 在plugins中插件对象并配置源和目标
+
+   from: 源, 从哪里拷贝, 可以是相对路径或绝对路径, 推荐绝对路径
+
+   to: 目标, 拷贝到哪里去, 相对于`output`的路径, 同样可以相对路径或绝对路径, 但更推荐相对路径(直接算相对dist目录即可)
+
+   ```js
+   plugins: [
+       new HtmlWebpackPlugin({
+         filename: 'index.html',
+         template: './src/index.html'
+       }),
+       new CleanWebpackPlugin(),
+       new CopyWebpackPlugin([
+         {
+           from: path.join(__dirname, 'assets'),
+           to: 'assets'
+         }
+       ])
+     ],
+   ```
+
+   ### BannerPlugin
+
+   这是一个webpack的内置插件，用于给打包的JS文件加上版权注释信息
+
+   1. 引入webpack插件
+
+      ```js
+      const webpack = require('webpack')
+      ```
+
+   2. 创建插件对象
+
+      ```js
+      plugins: [
+          new HtmlWebpackPlugin({
+            filename: 'index.html',
+            template: './src/index.html'
+          }),
+          new CleanWebpackPlugin(),
+          new CopyWebpackPlugin([
+            {
+              from: path.join(__dirname, 'assets'),
+              to: 'assets'
+            }
+          ]),
+          new webpack.BannerPlugin('黑马程序员牛逼!')
+        ],
+      ```
+
+      
+
 # 第2章 webpack高级
 
 # 第3章 webpack原理
