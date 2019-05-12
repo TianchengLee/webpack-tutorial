@@ -517,7 +517,7 @@ url-loader封装了file-loader, 所以使用url-loader时需要安装file-loader
      ],
    ```
 
-   ### BannerPlugin
+   #### BannerPlugin
 
    这是一个webpack的内置插件，用于给打包的JS文件加上版权注释信息
 
