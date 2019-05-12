@@ -1,5 +1,8 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const webpack = require('webpack')
 
 // webpack的配置文件遵循着CommonJS规范
 module.exports = {
@@ -12,7 +15,7 @@ module.exports = {
     filename: 'bundle.js',
     publicPath: '/'
   },
-  mode: 'development',
+  mode: 'production',
   // 开启监视模式, 此时执行webpack指令进行打包会监视文件变化自动打包
   // watch: true
   devServer: {
@@ -26,7 +29,15 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: './src/index.html'
-    })
+    }),
+    new CleanWebpackPlugin(),
+    new CopyWebpackPlugin([
+      {
+        from: path.join(__dirname, 'assets'),
+        to: 'assets'
+      }
+    ]),
+    new webpack.BannerPlugin('黑马程序员真牛biubiu!')
   ],
   module: {
     rules: [
@@ -65,8 +76,9 @@ module.exports = {
           // }
         },
         exclude: /node_modules/,
-        
+
       }
     ]
-  }
+  },
+  // devtool: 'cheap-module-eval-source-map'
 }
