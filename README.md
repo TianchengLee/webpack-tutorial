@@ -548,7 +548,26 @@ url-loader封装了file-loader, 所以使用url-loader时需要安装file-loader
 
       
 
-# 第2章 webpack高级
+# 第2章 webpack高级配置
+
+- HTML中img标签的图片资源处理
+- 打包文件分类输出
+- 多页应用打包
+- 全局变量引入
+
+- Development / Production不同配置文件打包
+- 使用devServer实现跨域
+
+- HMR高级用法
+
+
+
+## HTML中img标签的图片资源处理
+
+1. 安装`npm install -S html-withimg-loader`
+2. 
+
+
 
 # 第3章 webpack原理
 
