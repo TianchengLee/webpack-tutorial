@@ -41,6 +41,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
     "@babel/runtime": "^7.4.4",
-    "bootstrap": "^3.4.1"
+    "bootstrap": "^3.4.1",
+    "html-withimg-loader": "^0.1.16"
   }
 }

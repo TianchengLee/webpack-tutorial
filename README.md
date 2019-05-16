@@ -546,29 +546,62 @@ url-loader封装了file-loader, 所以使用url-loader时需要安装file-loader
         ],
       ```
 
-      
+      - HTML中img标签的图片资源处理
+      - 多页应用打包
+      - 全局变量引入
+      - Development / Production不同配置文件打包
+      - 使用devServer实现跨域
+      - HMR高级用法
 
-# 第2章 webpack高级配置
-
-- HTML中img标签的图片资源处理
-- 打包文件分类输出
-- 多页应用打包
-- 全局变量引入
-
-- Development / Production不同配置文件打包
-- 使用devServer实现跨域
-
-- HMR高级用法
-
-
+# 第3章 webpack高级配置
 
 ## HTML中img标签的图片资源处理
 
 1. 安装`npm install -S html-withimg-loader`
-2. 
 
+2. 在`webpack.config.js`文件中添加loader
 
+   ```js
+   {
+       test: /\.(htm|html)$/i,
+       loader: 'html-withimg-loader'
+   }
+   ```
 
-# 第3章 webpack原理
+   使用时，只需要在html中正常引用图片即可，webpack会找到对应的资源进行打包，并修改html中的引用路径
 
+## 多页应用打包
+
+1. 在`webpack.config.js`中修改入口和出口配置
+
+   ```js
+     // 1. 修改为多入口
+     entry: {
+         main: './src/main.js',
+         other: './src/other.js'
+     },
+     output: {
+       path: path.join(__dirname, './dist/'),
+       // filename: 'bundle.js',
+       // 2. 多入口无法对应一个固定的出口, 所以修改filename为[name]变量
+       filename: '[name].js',
+       publicPath: '/'
+     },
+     plugins: [
+         // 3. 如果用了html插件,需要手动配置多入口对应的html文件,将指定其对应的输出文件
+         new HtmlWebpackPlugin({
+             template: './index.html',
+             filename: 'index.html',
+             chunks: ['main']
+         }),
+         new HtmlWebpackPlugin({
+             template: './index.html',
+             filename: 'other.html',
+             // chunks: ['other', 'main']
+             chunks: ['other']
+         })
+     ]
+   ```
+
+2. 修改入口为对象，支持多个js入口，同时修改output输出的文件名为`'[name].js'`表示各自已入口文件名作为输出文件名，但是`html-webpack-plugin`不支持此功能，所以需要再拷贝一份插件，用于生成两个html页面，实现多页应用
 

@@ -6,16 +6,21 @@ const webpack = require('webpack')
 
 // webpack的配置文件遵循着CommonJS规范
 module.exports = {
-  entry: './src/main.js',
+  // entry: './src/main.js',
+  entry: {
+    index: './src/index.js',
+    other: './src/other.js'
+  },
   output: {
     // path.resolve() : 解析当前相对路径的绝对路径
     // path: path.resolve('./dist/'),
     // path: path.resolve(__dirname, './dist/'),
     path: path.join(__dirname, './dist/'),
-    filename: 'bundle.js',
+    // filename: 'bundle.js',
+    filename: '[name].js',
     publicPath: '/'
   },
-  mode: 'production',
+  mode: 'development',
   // 开启监视模式, 此时执行webpack指令进行打包会监视文件变化自动打包
   // watch: true
   devServer: {
@@ -28,7 +33,13 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: './src/index.html'
+      template: './src/index.html',
+      chunks: ['index', 'other']
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'other.html',
+      template: './src/other.html',
+      chunks: ['other']
     }),
     new CleanWebpackPlugin(),
     new CopyWebpackPlugin([
@@ -58,7 +69,7 @@ module.exports = {
           options: {
             limit: 5 * 1024,
             outputPath: 'images',
-            name: '[name]-[hash:4].[ext]'
+            name: '[name]-[hash:6].[ext]'
           }
         }
       },
@@ -77,6 +88,10 @@ module.exports = {
         },
         exclude: /node_modules/,
 
+      },
+      {
+        test: /\.(htm|html)$/i,
+        loader: 'html-withimg-loader'
       }
     ]
   },
