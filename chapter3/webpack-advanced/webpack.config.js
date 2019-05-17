@@ -48,7 +48,11 @@ module.exports = {
         to: 'assets'
       }
     ]),
-    new webpack.BannerPlugin('黑马程序员真牛biubiu!')
+    new webpack.BannerPlugin('黑马程序员真牛biubiu!'),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery'
+    })
   ],
   module: {
     rules: [
@@ -92,8 +96,16 @@ module.exports = {
       {
         test: /\.(htm|html)$/i,
         loader: 'html-withimg-loader'
-      }
+      },
+      // {
+      //   // 用于解析jQuery模块的绝对路径
+      //   test: require.resolve('jquery'),
+      //   use: {
+      //     loader: 'expose-loader',
+      //     options: '$'
+      //   }
+      // }
     ]
   },
-  // devtool: 'cheap-module-eval-source-map'
+  devtool: 'cheap-module-eval-source-map'
 }

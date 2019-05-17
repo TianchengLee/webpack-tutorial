@@ -521,7 +521,7 @@ url-loader封装了file-loader, 所以使用url-loader时需要安装file-loader
 
    这是一个webpack的内置插件，用于给打包的JS文件加上版权注释信息
 
-   1. 引入webpack插件
+   1. 引入webpack
 
       ```js
       const webpack = require('webpack')
@@ -546,10 +546,7 @@ url-loader封装了file-loader, 所以使用url-loader时需要安装file-loader
         ],
       ```
 
-      - HTML中img标签的图片资源处理
-      - 多页应用打包
-      - 全局变量引入
-      - Development / Production不同配置文件打包
+      - 
       - 使用devServer实现跨域
       - HMR高级用法
 
@@ -604,4 +601,51 @@ url-loader封装了file-loader, 所以使用url-loader时需要安装file-loader
    ```
 
 2. 修改入口为对象，支持多个js入口，同时修改output输出的文件名为`'[name].js'`表示各自已入口文件名作为输出文件名，但是`html-webpack-plugin`不支持此功能，所以需要再拷贝一份插件，用于生成两个html页面，实现多页应用
+
+## 第三方库的两种引入方式
+
+可以通过`expose-loader`进行全局变量的注入，同时也可以使用内置插件`webpack.ProvidePlugin`对每个模块的闭包空间，注入一个变量，自动加载模块，而不必到处 `import` 或 `require`
+
+- expose-loader **将库引入到全局作用域**
+
+  1. 安装`expose-loader`
+
+     `npm i -D expose-loader`
+
+  2. 配置loader
+
+     ```js
+     module: {
+       rules: [{
+         test: require.resolve('jquery'),
+         use: {
+           loader: 'expose-loader',
+           options: '$'
+         }
+       }]
+     }
+     ```
+
+     tips: `require.resolve` 用来获取模块的绝对路径。所以这里的loader只会作用于 jquery 模块。并且只在 bundle 中使用到它时，才进行处理。
+
+- webpack.ProvidePlugin **将库自动加载到每个模块**
+
+  1. 引入webpack
+
+     ```js
+     const webpack = require('webpack')
+     ```
+
+  2. 创建插件对象
+
+     要自动加载 `jquery`，我们可以将两个变量都指向对应的 node 模块
+
+     ```js
+     new webpack.ProvidePlugin({
+       $: 'jquery',
+       jQuery: 'jquery'
+     })
+     ```
+
+## Development / Production不同配置文件打包
 
