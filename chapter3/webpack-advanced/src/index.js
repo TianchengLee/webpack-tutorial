@@ -7,3 +7,10 @@ console.log($, jQuery)
 console.log(window.$)
 
 // $('body').css('backgroundColor', 'green')
+
+import { getUserInfo } from './api/http.js'
+getUserInfo().then(() => { }, (err) => {
+  console.log(err)
+})
+
+// console.log(IS_DEV, test, test2)

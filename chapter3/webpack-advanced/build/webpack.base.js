@@ -15,21 +15,13 @@ module.exports = {
     // path.resolve() : 解析当前相对路径的绝对路径
     // path: path.resolve('./dist/'),
     // path: path.resolve(__dirname, './dist/'),
-    path: path.join(__dirname, './dist/'),
+    path: path.join(__dirname, '..', './dist/'),
     // filename: 'bundle.js',
     filename: '[name].js',
     publicPath: '/'
   },
-  mode: 'development',
   // 开启监视模式, 此时执行webpack指令进行打包会监视文件变化自动打包
   // watch: true
-  devServer: {
-    open: true,
-    hot: true,
-    compress: true,
-    port: 3000,
-    // contentBase: './src'
-  },
   plugins: [
     new HtmlWebpackPlugin({
       filename: 'index.html',
@@ -44,7 +36,7 @@ module.exports = {
     new CleanWebpackPlugin(),
     new CopyWebpackPlugin([
       {
-        from: path.join(__dirname, 'assets'),
+        from: path.join(__dirname, '..', 'assets'),
         to: 'assets'
       }
     ]),
@@ -106,6 +98,5 @@ module.exports = {
       //   }
       // }
     ]
-  },
-  devtool: 'cheap-module-eval-source-map'
+  }
 }

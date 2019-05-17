@@ -546,8 +546,6 @@ url-loader封装了file-loader, 所以使用url-loader时需要安装file-loader
         ],
       ```
 
-      - 
-      - 使用devServer实现跨域
       - HMR高级用法
 
 # 第3章 webpack高级配置
@@ -648,4 +646,46 @@ url-loader封装了file-loader, 所以使用url-loader时需要安装file-loader
      ```
 
 ## Development / Production不同配置文件打包
+
+项目开发时一般需要使用两套配置文件，用于开发阶段打包（不压缩代码，不优化代码，增加效率）和上线阶段打包（压缩代码，优化代码，打包后直接上线使用）
+
+抽取三个配置文件：
+
+- webpack.base.js
+
+- webpack.prod.js
+
+- webpack.dev.js
+
+步骤如下：
+
+1. 将开发环境和生产环境公用的配置放入base中，不同的配置各自放入prod或dev文件中（例如：mode）
+
+2. 然后在dev和prod中使用`webpack-merge`把自己的配置与base的配置进行合并后导出
+
+   `npm i -D webpack-merge`
+
+3. 将package.json中的脚本参数进行修改，通过`--config`手动指定特定的配置文件
+
+## 定义环境变量
+
+除了区分不同的配置文件进行打包，还需要在开发时知道当前的环境是开发阶段或上线阶段，所以可以借助内置插件`DefinePlugin`来定义环境变量。最终可以实现开发阶段与上线阶段的api地址自动切换。
+
+1. 引入webpack
+
+   ```js
+   const webpack = require('webpack')
+   ```
+
+2. 创建插件对象，并定义环境变量
+
+   ```js
+   new webpack.DefinePlugin({
+     IS_DEV: 'false'
+   })
+   ```
+
+3. 在src打包的代码环境下可以直接使用
+
+## 使用devServer实现跨域
 
