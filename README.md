@@ -690,7 +690,7 @@ url-loader封装了file-loader, 所以使用url-loader时需要安装file-loader
 
 在开发阶段很多时候需要使用到跨域，何为跨域？请看下图：
 
-![跨域](.\assets\跨域.png)
+![跨域](./assets/跨域.png)
 
 开发阶段往往会遇到上面这种情况，也许将来上线后，前端项目会和后端项目部署在同一个服务器下，并不会有跨域问题，但是由于开发时会用到webpack-dev-server，所以一定会产生跨域的问题
 
@@ -706,7 +706,7 @@ url-loader封装了file-loader, 所以使用url-loader时需要安装file-loader
 
 由于ajax请求是发送给devServer服务器的，所以不存在跨域，而devServer由于是用node平台发送的http请求，自然也不涉及到跨域问题，可以完美解决！
 
-![解决跨域](.\assets\解决跨域.png)
+![解决跨域](./assets/解决跨域.png)
 
 服务器代码（返回一段字符串即可）：
 
