@@ -521,7 +521,7 @@ url-loader封装了file-loader, 所以使用url-loader时需要安装file-loader
 
    这是一个webpack的内置插件，用于给打包的JS文件加上版权注释信息
 
-   1. 引入webpack插件
+   1. 引入webpack
 
       ```js
       const webpack = require('webpack')
@@ -546,10 +546,221 @@ url-loader封装了file-loader, 所以使用url-loader时需要安装file-loader
         ],
       ```
 
-      
 
-# 第2章 webpack高级
+# 第3章 webpack高级配置
 
-# 第3章 webpack原理
+## HTML中img标签的图片资源处理
 
+1. 安装`npm install -S html-withimg-loader`
+
+2. 在`webpack.config.js`文件中添加loader
+
+   ```js
+   {
+       test: /\.(htm|html)$/i,
+       loader: 'html-withimg-loader'
+   }
+   ```
+
+   使用时，只需要在html中正常引用图片即可，webpack会找到对应的资源进行打包，并修改html中的引用路径
+
+## 多页应用打包
+
+1. 在`webpack.config.js`中修改入口和出口配置
+
+   ```js
+     // 1. 修改为多入口
+     entry: {
+         main: './src/main.js',
+         other: './src/other.js'
+     },
+     output: {
+       path: path.join(__dirname, './dist/'),
+       // filename: 'bundle.js',
+       // 2. 多入口无法对应一个固定的出口, 所以修改filename为[name]变量
+       filename: '[name].js',
+       publicPath: '/'
+     },
+     plugins: [
+         // 3. 如果用了html插件,需要手动配置多入口对应的html文件,将指定其对应的输出文件
+         new HtmlWebpackPlugin({
+             template: './index.html',
+             filename: 'index.html',
+             chunks: ['main']
+         }),
+         new HtmlWebpackPlugin({
+             template: './index.html',
+             filename: 'other.html',
+             // chunks: ['other', 'main']
+             chunks: ['other']
+         })
+     ]
+   ```
+
+2. 修改入口为对象，支持多个js入口，同时修改output输出的文件名为`'[name].js'`表示各自已入口文件名作为输出文件名，但是`html-webpack-plugin`不支持此功能，所以需要再拷贝一份插件，用于生成两个html页面，实现多页应用
+
+## 第三方库的两种引入方式
+
+可以通过`expose-loader`进行全局变量的注入，同时也可以使用内置插件`webpack.ProvidePlugin`对每个模块的闭包空间，注入一个变量，自动加载模块，而不必到处 `import` 或 `require`
+
+- expose-loader **将库引入到全局作用域**
+
+  1. 安装`expose-loader`
+
+     `npm i -D expose-loader`
+
+  2. 配置loader
+
+     ```js
+     module: {
+       rules: [{
+         test: require.resolve('jquery'),
+         use: {
+           loader: 'expose-loader',
+           options: '$'
+         }
+       }]
+     }
+     ```
+
+     tips: `require.resolve` 用来获取模块的绝对路径。所以这里的loader只会作用于 jquery 模块。并且只在 bundle 中使用到它时，才进行处理。
+
+- webpack.ProvidePlugin **将库自动加载到每个模块**
+
+  1. 引入webpack
+
+     ```js
+     const webpack = require('webpack')
+     ```
+
+  2. 创建插件对象
+
+     要自动加载 `jquery`，我们可以将两个变量都指向对应的 node 模块
+
+     ```js
+     new webpack.ProvidePlugin({
+       $: 'jquery',
+       jQuery: 'jquery'
+     })
+     ```
+
+## Development / Production不同配置文件打包
+
+项目开发时一般需要使用两套配置文件，用于开发阶段打包（不压缩代码，不优化代码，增加效率）和上线阶段打包（压缩代码，优化代码，打包后直接上线使用）
+
+抽取三个配置文件：
+
+- webpack.base.js
+
+- webpack.prod.js
+
+- webpack.dev.js
+
+步骤如下：
+
+1. 将开发环境和生产环境公用的配置放入base中，不同的配置各自放入prod或dev文件中（例如：mode）
+
+2. 然后在dev和prod中使用`webpack-merge`把自己的配置与base的配置进行合并后导出
+
+   `npm i -D webpack-merge`
+
+3. 将package.json中的脚本参数进行修改，通过`--config`手动指定特定的配置文件
+
+## 定义环境变量
+
+除了区分不同的配置文件进行打包，还需要在开发时知道当前的环境是开发阶段或上线阶段，所以可以借助内置插件`DefinePlugin`来定义环境变量。最终可以实现开发阶段与上线阶段的api地址自动切换。
+
+1. 引入webpack
+
+   ```js
+   const webpack = require('webpack')
+   ```
+
+2. 创建插件对象，并定义环境变量
+
+   ```js
+   new webpack.DefinePlugin({
+     IS_DEV: 'false'
+   })
+   ```
+
+3. 在src打包的代码环境下可以直接使用
+
+## 使用devServer解决跨域问题
+
+在开发阶段很多时候需要使用到跨域，何为跨域？请看下图：
+
+![跨域](.\assets\跨域.png)
+
+开发阶段往往会遇到上面这种情况，也许将来上线后，前端项目会和后端项目部署在同一个服务器下，并不会有跨域问题，但是由于开发时会用到webpack-dev-server，所以一定会产生跨域的问题
+
+目前解决跨域主要的方案有：
+
+1. jsonp（淘汰）
+2. cors
+3. http proxy
+
+此处介绍的使用devServer解决跨域，其实原理就是http proxy
+
+将所有ajax请求发送给devServer服务器，再由devServer服务器做一次转发，发送给数据接口服务器
+
+由于ajax请求是发送给devServer服务器的，所以不存在跨域，而devServer由于是用node平台发送的http请求，自然也不涉及到跨域问题，可以完美解决！
+
+![解决跨域](.\assets\解决跨域.png)
+
+服务器代码（返回一段字符串即可）：
+
+```js
+const express = require('express')
+const app = express()
+// const cors = require('cors')
+// app.use(cors())
+app.get('/api/getUserInfo', (req, res) => {
+  res.send({
+    name: '黑马儿',
+    age: 13
+  })
+});
+
+app.listen(9999, () => {
+  console.log('http://localhost:9999!');
+});
+```
+
+前端需要配置devServer的proxy功能，在`webpack.dev.js`中进行配置：
+
+```js
+devServer: {
+    open: true,
+    hot: true,
+    compress: true,
+    port: 3000,
+    // contentBase: './src'
+    proxy: {
+      '/api': 'http://localhost:9999'
+    }
+  },
+```
+
+意为前端请求`/api`的url时，webpack-dev-server会将请求转发给`http://localhost:9999/api`处，此时如果请求地址为`http://localhost:9999/api/getUserInfo`，只需要直接写`/api/getUserInfo`即可，代码如下：
+
+```js
+axios.get('/api/getUserInfo').then(result => console.log(result))
+```
+
+## HMR的使用
+
+需要对某个模块进行热更新时，可以通过`module.hot.accept`方法进行文件监视
+
+只要模块内容发生变化，就会触发回调函数，从而可以重新读取模块内容，做对应的操作
+
+```js
+if (module.hot) {
+  module.hot.accept('./hotmodule.js', function() {
+    console.log('hotmodule.js更新了');
+    let str = require('./hotmodule.js')
+    console.log(str)
+  })
+}
+```
 
