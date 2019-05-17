@@ -748,5 +748,19 @@ devServer: {
 axios.get('/api/getUserInfo').then(result => console.log(result))
 ```
 
-## HMR的高级用法
+## HMR的使用
+
+需要对某个模块进行热更新时，可以通过`module.hot.accept`方法进行文件监视
+
+只要模块内容发生变化，就会触发回调函数，从而可以重新读取模块内容，做对应的操作
+
+```js
+if (module.hot) {
+  module.hot.accept('./hotmodule.js', function() {
+    console.log('hotmodule.js更新了');
+    let str = require('./hotmodule.js')
+    console.log(str)
+  })
+}
+```
 

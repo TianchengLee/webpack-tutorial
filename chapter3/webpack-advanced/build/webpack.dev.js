@@ -9,7 +9,7 @@ module.exports = merge(baseConfig, {
   // watch: true
   devServer: {
     open: true,
-    hot: true,
+    hot: true, // 开启热更新
     compress: true,
     port: 3000,
     // contentBase: './src'
