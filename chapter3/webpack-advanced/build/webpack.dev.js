@@ -13,6 +13,24 @@ module.exports = merge(baseConfig, {
     compress: true,
     port: 3000,
     // contentBase: './src'
+    proxy: {
+      // /api/getUserInfo
+      // 当前端请求 /api 地址时, 会将请求转发到 
+      // http://localhost:9999/api
+      // 举例: 客户端现在请求的时 /api/getUserInfo
+      // 此时会将请求转发到: http://localhost:9999/api/getUserInfo
+      // '/api': 'http://localhost:9999',
+      // 此时会将请求转发到: http://localhost:9999/getUserInfo
+      // '/getUserInfo': 'http://localhost:9999'
+      '/api': {
+        target: 'http://localhost:9999',
+        // 转发请求时不会携带 /api
+        // http://localhost:9999/getUserInfo
+        pathRewrite: {
+          '^/api': ''
+        }
+      }
+    }
   },
   devtool: 'cheap-module-eval-source-map',
   plugins: [

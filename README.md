@@ -546,7 +546,6 @@ url-loader封装了file-loader, 所以使用url-loader时需要安装file-loader
         ],
       ```
 
-      - HMR高级用法
 
 # 第3章 webpack高级配置
 
@@ -687,5 +686,67 @@ url-loader封装了file-loader, 所以使用url-loader时需要安装file-loader
 
 3. 在src打包的代码环境下可以直接使用
 
-## 使用devServer实现跨域
+## 使用devServer解决跨域问题
+
+在开发阶段很多时候需要使用到跨域，何为跨域？请看下图：
+
+![跨域](.\assets\跨域.png)
+
+开发阶段往往会遇到上面这种情况，也许将来上线后，前端项目会和后端项目部署在同一个服务器下，并不会有跨域问题，但是由于开发时会用到webpack-dev-server，所以一定会产生跨域的问题
+
+目前解决跨域主要的方案有：
+
+1. jsonp（淘汰）
+2. cors
+3. http proxy
+
+此处介绍的使用devServer解决跨域，其实原理就是http proxy
+
+将所有ajax请求发送给devServer服务器，再由devServer服务器做一次转发，发送给数据接口服务器
+
+由于ajax请求是发送给devServer服务器的，所以不存在跨域，而devServer由于是用node平台发送的http请求，自然也不涉及到跨域问题，可以完美解决！
+
+![解决跨域](.\assets\解决跨域.png)
+
+服务器代码（返回一段字符串即可）：
+
+```js
+const express = require('express')
+const app = express()
+// const cors = require('cors')
+// app.use(cors())
+app.get('/api/getUserInfo', (req, res) => {
+  res.send({
+    name: '黑马儿',
+    age: 13
+  })
+});
+
+app.listen(9999, () => {
+  console.log('http://localhost:9999!');
+});
+```
+
+前端需要配置devServer的proxy功能，在`webpack.dev.js`中进行配置：
+
+```js
+devServer: {
+    open: true,
+    hot: true,
+    compress: true,
+    port: 3000,
+    // contentBase: './src'
+    proxy: {
+      '/api': 'http://localhost:9999'
+    }
+  },
+```
+
+意为前端请求`/api`的url时，webpack-dev-server会将请求转发给`http://localhost:9999/api`处，此时如果请求地址为`http://localhost:9999/api/getUserInfo`，只需要直接写`/api/getUserInfo`即可，代码如下：
+
+```js
+axios.get('/api/getUserInfo').then(result => console.log(result))
+```
+
+## HMR的高级用法
 
