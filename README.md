@@ -764,3 +764,30 @@ if (module.hot) {
 }
 ```
 
+# 第4章 webpack优化
+
+## production模式打包自带优化
+
+- tree shaking
+
+  tree shaking 是一个术语，通常用于打包时移除 JavaScript 中的未引用的代码(dead-code)，它依赖于 ES6 模块系统中 `import`和 `export`的**静态结构**特性。
+
+  开发时引入一个模块后，如果只使用其中一个功能，上线打包时只会把用到的功能打包进bundle，其他没用到的功能都不会打包进来，可以实现最基础的优化
+
+
+
+- scope hoisting
+
+  scope hoisting的作用是将模块之间的关系进行结果推测， 可以让 Webpack 打包出来的代码文件更小、运行的更快
+
+  scope hoisting 的实现原理其实很简单：分析出模块之间的依赖关系，尽可能的把打散的模块合并到一个函数中去，但前提是不能造成代码冗余。
+  因此只有那些被引用了一次的模块才能被合并。
+
+  由于 scope hoisting 需要分析出模块之间的依赖关系，因此源码必须采用 ES6 模块化语句，不然它将无法生效。
+  原因和tree shaking一样。
+
+  
+
+- 代码压缩
+
+  所有代码使用UglifyJsPlugin插件进行压缩、混淆
