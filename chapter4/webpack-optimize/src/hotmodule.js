@@ -1,0 +1,1 @@
+export default '好热!真的热!'
