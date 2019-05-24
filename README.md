@@ -791,3 +791,45 @@ if (module.hot) {
 - 代码压缩
 
   所有代码使用UglifyJsPlugin插件进行压缩、混淆
+
+## css优化
+
+### mini-css-extract-plugin
+
+将CSS提取为独立的文件的插件，对每个包含css的js文件都会创建一个CSS文件，支持按需加载css和sourceMap
+
+只能用在webpack4中，对比另一个插件 extract-text-webpack-plugin有如下优势:
+
+- 异步加载
+- 不重复编译，性能更好
+- 更容易使用
+- 只针对CSS
+
+使用方法：
+
+1. 安装
+
+   `npm i -D mini-css-extract-plugin`
+
+2. 在webpack配置文件中引入插件
+
+   ```js
+   const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+   ```
+
+3. 创建插件对象，配置抽离的css文件名，支持placeholder语法
+
+   ```js
+   new MiniCssExtractPlugin({
+   	filename: '[name].css'
+   })
+   ```
+
+4. 将原来配置的`style-loader`替换为`MiniCssExtractPlugin.loader`
+
+   ```js
+   // { test: /\.less$/, use: ['style-loader', 'css-loader', 'less-loader'] },
+   { test: /\.less$/, use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'] },
+   ```
+
+   
