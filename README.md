@@ -794,11 +794,11 @@ if (module.hot) {
 
 ## css优化
 
-### mini-css-extract-plugin
+### 将css提取到独立文件中
 
-将CSS提取为独立的文件的插件，对每个包含css的js文件都会创建一个CSS文件，支持按需加载css和sourceMap
+`mini-css-extract-plugin`是用于将CSS提取为独立的文件的插件，对每个包含css的js文件都会创建一个CSS文件，支持按需加载css和sourceMap
 
-只能用在webpack4中，对比另一个插件 extract-text-webpack-plugin有如下优势:
+只能用在webpack4中，有如下优势:
 
 - 异步加载
 - 不重复编译，性能更好
@@ -825,11 +825,84 @@ if (module.hot) {
    })
    ```
 
-4. 将原来配置的`style-loader`替换为`MiniCssExtractPlugin.loader`
+4. 将原来配置的所有`style-loader`替换为`MiniCssExtractPlugin.loader`
 
    ```js
+   {
+   test: /\.css$/,
+   // webpack读取loader时 是从右到左的读取, 会将css文件先交给最右侧的loader来处理
+// loader的执行顺序是从右到左以管道的方式链式调用
+   // css-loader: 解析css文件
+   // style-loader: 将解析出来的结果 放到html中, 使其生效
+   // use: ['style-loader', 'css-loader']
+   use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader']
+   },
    // { test: /\.less$/, use: ['style-loader', 'css-loader', 'less-loader'] },
    { test: /\.less$/, use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'] },
+   // { test: /\.s(a|c)ss$/, use: ['style-loader', 'css-loader', 'sass-loader'] },
+   { test: /\.s(a|c)ss$/, use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'] },
+   ```
+   
+
+### 自动添加css前缀
+
+使用`postcss`，需要用到`postcss-loader`和`autoprefixer`插件
+
+1. 安装
+
+   `npm i -D postcss-loader autoprefixer`
+
+2. 修改webpack配置文件中的loader，将`postcss-loader`放置在`css-loader`的右边（调用链从右到左）
+
+   ```js
+   {
+   test: /\.css$/,
+   // webpack读取loader时 是从右到左的读取, 会将css文件先交给最右侧的loader来处理
+   // loader的执行顺序是从右到左以管道的方式链式调用
+   // css-loader: 解析css文件
+   // style-loader: 将解析出来的结果 放到html中, 使其生效
+   // use: ['style-loader', 'css-loader']
+   use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader']
+   },
+   // { test: /\.less$/, use: ['style-loader', 'css-loader', 'less-loader'] },
+   { test: /\.less$/, use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'less-loader'] },
+   // { test: /\.s(a|c)ss$/, use: ['style-loader', 'css-loader', 'sass-loader'] },
+   { test: /\.s(a|c)ss$/, use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'sass-loader'] },
    ```
 
-   
+3. 项目根目录下添加`postcss`的配置文件：`postcss.config.js`
+
+4. 在`postcss`的配置文件中使用插件
+
+   ```js
+   module.exports = {
+     plugins: [require('autoprefixer')]
+   }
+   ```
+
+### 开启css压缩
+
+需要使用`optimize-css-assets-webpack-plugin`插件来完成css压缩
+
+但是由于配置css压缩时会覆盖掉webpack默认的优化配置，导致JS代码无法压缩，所以还需要手动把JS代码压缩插件导入进来：`terser-webpack-plugin`
+
+1. 安装
+
+   `npm i -D optimize-css-assets-webpack-plugin terser-webpack-plugin `
+
+2. 导入插件
+
+   ```js
+   const TerserJSPlugin = require('terser-webpack-plugin')
+   const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+   ```
+
+3. 在webpack配置文件中添加配置节点
+
+   ```js
+   optimization: {
+     minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
+   },
+   ```
+
+tips: webpack4默认采用的JS压缩插件为：`uglifyjs-webpack-plugin`，在`mini-css-extract-plugin`上一个版本中还推荐使用该插件，但最新的v0.6中建议使用`teser-webpack-plugin`来完成js代码压缩，具体原因未在官网说明，我们就按照最新版的官方文档来做即可
