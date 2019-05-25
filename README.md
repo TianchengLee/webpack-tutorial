@@ -907,11 +907,9 @@ if (module.hot) {
 
 tips: webpack4默认采用的JS压缩插件为：`uglifyjs-webpack-plugin`，在`mini-css-extract-plugin`上一个版本中还推荐使用该插件，但最新的v0.6中建议使用`teser-webpack-plugin`来完成js代码压缩，具体原因未在官网说明，我们就按照最新版的官方文档来做即可
 
+## js代码分离
 
-
-## js优化
-
-Code Spliting是webpack打包时用到的重要的优化特性之一，此特性能够把代码分离到不同的 bundle 中，然后可以按需加载或并行加载这些文件。代码分离可以用于获取更小的 bundle，以及控制资源加载优先级，如果使用合理，会极大影响加载时间。
+Code Splitting是webpack打包时用到的重要的优化特性之一，此特性能够把代码分离到不同的 bundle 中，然后可以按需加载或并行加载这些文件。代码分离可以用于获取更小的 bundle，以及控制资源加载优先级，如果使用合理，会极大影响加载时间。
 
 有三种常用的代码分离方法：
 
@@ -1007,7 +1005,7 @@ tips: Webpack v4以上使用的插件为`SplitChunksPlugin`，以前使用的`Co
 
    ![1558772012664](assets/1558772012664.png)
 
-### 动态导入(懒加载)
+### 动态导入 (懒加载)
 
 webpack4默认是允许import语法动态导入的，但是需要babel的插件支持，最新版babel的插件包为：`@babel/plugin-syntax-dynamic-import`，以前老版本不是`@babel`开头，已经无法使用，需要注意
 
