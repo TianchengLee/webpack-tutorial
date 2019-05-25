@@ -906,3 +906,197 @@ if (module.hot) {
    ```
 
 tips: webpack4默认采用的JS压缩插件为：`uglifyjs-webpack-plugin`，在`mini-css-extract-plugin`上一个版本中还推荐使用该插件，但最新的v0.6中建议使用`teser-webpack-plugin`来完成js代码压缩，具体原因未在官网说明，我们就按照最新版的官方文档来做即可
+
+
+
+## js优化
+
+Code Spliting是webpack打包时用到的重要的优化特性之一，此特性能够把代码分离到不同的 bundle 中，然后可以按需加载或并行加载这些文件。代码分离可以用于获取更小的 bundle，以及控制资源加载优先级，如果使用合理，会极大影响加载时间。
+
+有三种常用的代码分离方法：
+
+- 入口起点(entry points)：使用`entry`配置手动地分离代码。
+- 防止重复(prevent duplication)：使用 `SplitChunksPlugin`去重和分离 chunk。
+- 动态导入(dynamic imports)：通过模块的内联函数调用来分离代码。
+
+### 手动配置多入口
+
+1. 在webpack配置文件中配置多个入口
+
+   ```js
+   entry: {
+     main: './src/main.js',
+     other: './src/other.js'
+   },
+   output: {
+     // path.resolve() : 解析当前相对路径的绝对路径
+     // path: path.resolve('./dist/'),
+     // path: path.resolve(__dirname, './dist/'),
+     path: path.join(__dirname, '..', './dist/'),
+     // filename: 'bundle.js',
+     filename: '[name].bundle.js',
+     publicPath: '/'
+   },
+   ```
+
+2. 在main.js和other.js中都引入同一个模块，并使用其功能
+
+   main.js
+
+   ```js
+   import $ from 'jquery'
+   
+   $(function() {
+     $('<div></div>').html('main').appendTo('body')
+   })
+   ```
+
+   other.js
+
+   ```js
+   import $ from 'jquery'
+   
+   $(function() {
+     $('<div></div>').html('other').appendTo('body')
+   })
+   ```
+
+3. 修改package.json的脚本，添加一个使用dev配置文件进行打包的脚本（目的是不压缩代码检查打包的bundle时更方便）
+
+   ```json
+   "scripts": {
+       "build": "webpack --config ./build/webpack.prod.js",
+       "dev-build": "webpack --config ./build/webpack.dev.js"
+   }
+   ```
+
+4. 运行`npm run dev-build`，进行打包
+
+5. 查看打包后的结果，发现other.bundle.js和main.bundle.js都同时打包了jQuery源文件
+
+   ![main](./assets/main.bundle.js.png)
+
+   ![other](./assets/other.bundle.js.png)
+
+这种方法存在一些问题:
+
+- 如果入口 chunks 之间包含重复的模块，那些重复模块都会被引入到各个 bundle 中。
+- 这种方法不够灵活，并且不能将核心应用程序逻辑进行动态拆分代码。
+
+### 抽取公共代码
+
+tips: Webpack v4以上使用的插件为`SplitChunksPlugin`，以前使用的`CommonsChunkPlugin`已经被移除了，最新版的webpack只需要在配置文件中的`optimization`节点下添加一个`splitChunks`属性即可进行相关配置
+
+1. 修改webpack配置文件
+
+   ```js
+   optimization: {
+       splitChunks: {
+         chunks: 'all'
+       }
+   },
+   ```
+
+2. 运行`npm run dev-build`重新打包
+
+3. 查看`dist`目录
+
+   ![1558771916946](assets/1558771916946.png)
+
+4. 查看`vendors~main~other.bundle.js`，其实就是把都用到的jQuery打包到了一个单独的js中
+
+   ![1558772012664](assets/1558772012664.png)
+
+### 动态导入(懒加载)
+
+webpack4默认是允许import语法动态导入的，但是需要babel的插件支持，最新版babel的插件包为：`@babel/plugin-syntax-dynamic-import`，以前老版本不是`@babel`开头，已经无法使用，需要注意
+
+动态导入最大的好处是实现了懒加载，用到哪个模块才会加载哪个模块，可以提高SPA应用程序的首屏加载速度，Vue、React、Angular框架的路由懒加载原理一样
+
+1. 安装babel插件
+
+   `npm install -D @babel/plugin-syntax-dynamic-import`
+
+2. 修改.babelrc配置文件，添加`@babel/plugin-syntax-dynamic-import`插件
+
+   ```json
+   {
+     "presets": ["@babel/env"],
+     "plugins": [
+       "@babel/plugin-proposal-class-properties",
+       "@babel/plugin-transform-runtime",
+       "@babel/plugin-syntax-dynamic-import"
+     ]
+   }
+   ```
+
+3. 将jQuery模块进行动态导入
+
+   ```js
+   function getComponent() {
+     return import('jquery').then(({ default: $ }) => {
+       return $('<div></div>').html('main')
+     })
+   }
+   ```
+
+4. 给某个按钮添加点击事件，点击后调用getComponent函数创建元素并添加到页面
+
+   ```js
+   window.onload = function () {
+     document.getElementById('btn').onclick = function () {
+       getComponent().then(item => {
+         item.appendTo('body')
+       })
+     }
+   }
+   ```
+
+   
+
+### SplitChunksPlugin配置参数
+
+webpack4之后，使用`SplitChunksPlugin`插件替代了以前`CommonsChunkPlugin`
+
+而`SplitChunksPlugin`的配置，只需要在webpack配置文件中的`optimization`节点下的`splitChunks`进行修改即可，如果没有任何修改，则会使用默认配置
+
+默认的`SplitChunksPlugin` 配置适用于绝大多数用户
+
+webpack 会基于如下默认原则自动分割代码：
+
+- 公用代码块或来自 *node_modules* 文件夹的组件模块。
+- 打包的代码块大小超过 30k（最小化压缩之前）。
+- 按需加载代码块时，同时发送的请求最大数量不应该超过 5。
+- 页面初始化时，同时发送的请求最大数量不应该超过 3。
+
+以下是`SplitChunksPlugin`的默认配置：
+
+```js
+module.exports = {
+  //...
+  optimization: {
+    splitChunks: {
+      chunks: 'async', // 只对异步加载的模块进行拆分，可选值还有all | initial
+      minSize: 30000, // 模块最少大于30KB才拆分
+      maxSize: 0,  // 模块大小无上限，只要大于30KB都拆分
+      minChunks: 1, // 模块最少引用一次才会被拆分
+      maxAsyncRequests: 5, // 异步加载时同时发送的请求数量最大不能超过5,超过5的部分不拆分
+      maxInitialRequests: 3, // 页面初始化时同时发送的请求数量最大不能超过3,超过3的部分不拆分
+      automaticNameDelimiter: '~', // 默认的连接符
+      name: true, // 拆分的chunk名,设为true表示根据模块名和CacheGroup的key来自动生成,使用上面连接符连接
+      cacheGroups: { // 缓存组配置,上面配置读取完成后进行拆分,如果需要把多个模块拆分到一个文件,就需要缓存,所以命名为缓存组
+        vendors: { // 自定义缓存组名
+          test: /[\\/]node_modules[\\/]/, // 检查node_modules目录,只要模块在该目录下就使用上面配置拆分到这个组
+          priority: -10 // 权重-10,决定了哪个组优先匹配,例如node_modules下有个模块要拆分,同时满足vendors和default组,此时就会分到vendors组,因为-10 > -20
+        },
+        default: { // 默认缓存组名
+          minChunks: 2, // 最少引用两次才会被拆分
+          priority: -20, // 权重-20
+          reuseExistingChunk: true // 如果主入口中引入了两个模块,其中一个正好也引用了后一个,就会直接复用,无需引用两次
+        }
+      }
+    }
+  }
+};
+```
+
