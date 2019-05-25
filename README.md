@@ -794,15 +794,15 @@ if (module.hot) {
 
 ## css优化
 
-### 将css提取到独立文件中
+### 将css提取到独立的文件中
 
 `mini-css-extract-plugin`是用于将CSS提取为独立的文件的插件，对每个包含css的js文件都会创建一个CSS文件，支持按需加载css和sourceMap
 
 只能用在webpack4中，有如下优势:
 
 - 异步加载
-- 不重复编译，性能更好
-- 更容易使用
+- 不重复编译，性能很好
+- 容易使用
 - 只针对CSS
 
 使用方法：
