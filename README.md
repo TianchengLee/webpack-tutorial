@@ -1098,3 +1098,17 @@ module.exports = {
 };
 ```
 
+## noParse
+
+在引入一些第三方模块时，例如jQuery、bootstrap等，我们知道其内部肯定不会依赖其他模块，因为最终我们用到的只是一个单独的js文件或css文件
+
+所以此时如果webpack再去解析他们的内部依赖关系，其实是非常浪费时间的，我们需要阻止webpack浪费精力去解析这些明知道没有依赖的库
+
+可以在webpack配置文件的`module`节点下加上`noParse`，并配置正则来确定不需要解析依赖关系的模块
+
+```js
+module: {
+	noParse: /jquery|bootstrap/
+}
+```
+
