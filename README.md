@@ -1171,4 +1171,134 @@ module: {
    console.log(moment().subtract(6, 'days').calendar())
    ```
 
+## DllPlugin
+
+在引入一些第三方模块时，例如vue、react、angular等框架，这些框架的文件一般都是不会修改的，而每次打包都需要去解析它们，也会影响打包速度，哪怕做拆分，也只是提高了上线后用户访问速度，并不会提高构建速度，所以如果需要提高构建速度，应该使用动态链接库的方式，类似于Windows中的dll文件。
+
+借助DllPlugin插件实现将这些框架作为一个个的动态链接库，只构建一次，以后每次构建都只生成自己的业务代码，可以大大提高构建效率！
+
+主要思想在于，将一些不做修改的依赖文件，提前打包，这样我们开发代码发布的时候就不需要再对这部分代码进行打包，从而节省了打包时间。
+
+涉及两个插件：
+
+1. DllPlugin
+
+   使用一个单独webpack配置创建一个dll文件。并且它还创建一个manifest.json。DllReferencePlugin使用该json文件来做映射依赖性。（这个文件会告诉我们的哪些文件已经提取打包好了）
+
+   配置参数：
+
+   - context (可选): manifest文件中请求的上下文，默认为该webpack文件上下文。
+   - name: 公开的dll函数的名称，和output.library保持一致即可。
+   - path: manifest.json生成的文件夹及名字
+
+2. DllReferencePlugin
+
+   这个插件用于主webpack配置，它引用的dll需要预先构建的依赖关系。
+
+   - context: manifest文件中请求的上下文。
+
+   - manifest: DllPlugin插件生成的manifest.json
+
+   - content(可选): 请求的映射模块id(默认为manifest.content)
+
+   - name(可选): dll暴露的名称
+
+   - scope(可选): 前缀用于访问dll的内容
+
+   - sourceType(可选): dll是如何暴露(libraryTarget)
+
+### 将Vue项目中的库抽取成Dll
+
+1. 准备一份将Vue打包成DLL的webpack配置文件
+
+   在build目录下新建一个文件：webpack.vue.js
+
+   配置入口：将多个要做成dll的库全放进来
+
+   配置出口：一定要设置library属性，将打包好的结果暴露在全局
+
+   配置plugin：设置打包后dll文件名和manifest文件所在地
+
+   ```js
+   const path = require('path')
+   const webpack = require('webpack')
+   module.exports = {
+     mode: 'development',
+     entry: {
+       vue: [
+         'vue/dist/vue.js',
+         'vue-router'
+       ]
+     },
+     output: {
+       filename: '[name]_dll.js',
+       path: path.resolve(__dirname, '../dist'),
+       library: '[name]_dll'
+     },
+     plugins: [
+       new webpack.DllPlugin({
+         name: '[name]_dll',
+         path: path.resolve(__dirname, '../dist/manifest.json')
+       })
+     ]
+   }
+   ```
+
+2. 在webpack.base.js中进行插件的配置
+
+   使用DLLReferencePlugin指定manifest文件的位置即可
+
+   ```js
+   new webpack.DllReferencePlugin({
+     manifest: path.resolve(__dirname, '../dist/manifest.json')
+   })
+   ```
+
+### 将React项目中的库抽取成Dll
+
+1. 准备一份将React打包成DLL的webpack配置文件
+
+   在build目录下新建一个文件：webpack.vue.js
+
+   配置入口：将多个要做成dll的库全放进来
+
+   配置出口：一定要设置library属性，将打包好的结果暴露在全局
+
+   配置plugin：设置打包后dll文件名和manifest文件所在地
+
+   ```js
+   const path = require('path')
+   const webpack = require('webpack')
+   module.exports = {
+     mode: 'development',
+     entry: {
+       react: [
+         'react',
+         'react-dom'
+       ]
+     },
+     output: {
+       filename: '[name]_dll.js',
+       path: path.resolve(__dirname, '../dist'),
+       library: '[name]_dll'
+     },
+     plugins: [
+       new webpack.DllPlugin({
+         name: '[name]_dll',
+         path: path.resolve(__dirname, '../dist/manifest.json')
+       })
+     ]
+   }
+   ```
+
+2. 在webpack.base.js中进行插件的配置
+
+   使用DLLReferencePlugin指定manifest文件的位置即可
+
+   ```js
+   new webpack.DllReferencePlugin({
+     manifest: path.resolve(__dirname, '../dist/manifest.json')
+   })
+   ```
+
    
