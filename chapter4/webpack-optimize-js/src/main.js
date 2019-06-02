@@ -1,9 +1,44 @@
-import moment from 'moment'
-// 手动引入语言包
-import 'moment/locale/zh-cn'
-// 设置语言
-moment.locale('zh-CN')
-console.log(moment().subtract(6, 'days').calendar())
+// import vue from 'vue' // runtime-only 的 vue 包
+import Vue from 'vue/dist/vue.js' // 完整版的vuejs
+import VueRouter from 'vue-router'
+
+Vue.use(VueRouter)
+
+const homeComponent = {
+  template: '<h2>我是homeaaa页面</h2>'
+}
+
+const newsComponent = {
+  template: '<h2>我是newsheiheihei页面</h2>'
+}
+
+const router = new VueRouter({
+  routes: [
+    {
+      path: '/home',
+      component: homeComponent
+    },
+    {
+      path: '/news',
+      component: newsComponent
+    }
+  ]
+})
+
+new Vue({
+  el: '#app',
+  data: {
+    msg: 'helloworld'
+  },
+  router
+})
+
+// import moment from 'moment'
+// // 手动引入语言包
+// import 'moment/locale/zh-cn'
+// // 设置语言
+// moment.locale('zh-CN')
+// console.log(moment().subtract(6, 'days').calendar())
 
 
 // 静态导入

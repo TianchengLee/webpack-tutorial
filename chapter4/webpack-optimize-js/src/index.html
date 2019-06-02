@@ -7,6 +7,12 @@
   <title>Document</title>
 </head>
 <body>
+  <div id="app">
+    <h1 v-text="msg"></h1>
+    <router-link to="/home">去首页</router-link>
+    <router-link to="/news">去新闻</router-link>
+    <router-view></router-view>
+  </div>
   <button id="btn">点我加一个div</button>
 </body>
 </html>

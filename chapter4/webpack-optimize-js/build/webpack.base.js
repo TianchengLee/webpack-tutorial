@@ -4,6 +4,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const webpack = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const AddAssetHtmlWebpackPlugin = require('add-asset-html-webpack-plugin')
 
 // webpack的配置文件遵循着CommonJS规范
 module.exports = {
@@ -21,7 +22,7 @@ module.exports = {
         vendors: { // 自定义缓存组名
           test: /[\\/]node_modules[\\/]/, // 检查node_modules目录,只要模块在该目录下就使用上面配置拆分到这个组
           priority: -10, // 权重-10,决定了哪个组优先匹配,例如node_modules下有个模块要拆分,同时满足vendors和default组,此时就会分到vendors组,因为-10 > -20
-          filename: 'verdors.js'
+          filename: 'vendors.js'
         },
         default: { // 默认缓存组名
           minChunks: 2, // 最少引用两次才会被拆分
@@ -54,7 +55,7 @@ module.exports = {
       filename: 'index.html',
       template: './src/index.html'
     }),
-    new CleanWebpackPlugin(),
+    // new CleanWebpackPlugin(),
     new CopyWebpackPlugin([
       {
         from: path.join(__dirname, '..', 'assets'),
@@ -70,7 +71,13 @@ module.exports = {
       // placeholders
       filename: '[name].css'
     }),
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new webpack.DllReferencePlugin({
+      manifest: path.resolve(__dirname, '../dist/manifest.json')
+    }),
+    new AddAssetHtmlWebpackPlugin({
+      filepath: path.resolve(__dirname, '../dist/vue_dll.js')
+    })
   ],
   module: {
     noParse: /jquery|bootstrap/,
