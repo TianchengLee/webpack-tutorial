@@ -1112,3 +1112,63 @@ module: {
 }
 ```
 
+## IgnorePlugin
+
+在引入一些第三方模块时，例如moment，内部会做i18n国际化处理，所以会包含很多语言包，而语言包打包时会比较占用空间，如果我们项目只需要用到中文，或者少数语言，可以忽略掉所有的语言包，然后按需引入语言包
+
+从而使得构建效率更高，打包生成的文件更小
+
+需要忽略第三方模块内部依赖的其他模块，只需要三步：
+
+1. 首先要找到moment依赖的语言包是什么
+2. 使用IgnorePlugin插件忽略其依赖
+3. 需要使用某些依赖时自行手动引入
+
+具体实现如下：
+
+1. 通过查看moment的源码来分析：
+
+   ```js
+   function loadLocale(name) {
+       var oldLocale = null;
+       // TODO: Find a better way to register and load all the locales in Node
+       if (!locales[name] && (typeof module !== 'undefined') &&
+           module && module.exports) {
+           try {
+               oldLocale = globalLocale._abbr;
+               var aliasedRequire = require;
+               aliasedRequire('./locale/' + name);
+               getSetGlobalLocale(oldLocale);
+           } catch (e) {}
+       }
+       return locales[name];
+   }
+   
+   ```
+
+   观察上方代码，同时查看moment目录下确实有locale目录，其中放着所有国家的语言包，可以分析得出：locale目录就是moment所依赖的语言包目录
+
+2. 使用IgnorePlugin插件来忽略掉moment模块的locale目录
+
+   在webpack配置文件中安装插件，并传入配置项
+
+   参数1：表示要忽略的资源路径
+
+   参数2：要忽略的资源上下文（所在哪个目录）
+
+   两个参数都是正则对象
+
+   ```js
+   new webpack.IgnorePlugin(/\.\/locale/, /moment/)
+   ```
+
+3. 使用moment时需要手动引入语言包，否则默认使用英文
+
+   ```js
+   import moment from 'moment'
+   import 'moment/locale/zh-cn'
+   moment.locale('zh-CN')
+   console.log(moment().subtract(6, 'days').calendar())
+   ```
+
+   
