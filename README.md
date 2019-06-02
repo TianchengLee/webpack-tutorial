@@ -1254,6 +1254,18 @@ module: {
    })
    ```
 
+3. 安装add-asset-html-webpack-plugin
+
+   `npm i add-asset-html-webpack-plugin -D`
+
+4. 配置插件自动添加script标签到HTML中
+
+   ```js
+   new AddAssetHtmlWebpackPlugin({
+     filepath: path.resolve(__dirname, '../dist/vue_dll.js')
+   })
+   ```
+
 ### 将React项目中的库抽取成Dll
 
 1. 准备一份将React打包成DLL的webpack配置文件
@@ -1301,4 +1313,15 @@ module: {
    })
    ```
 
+3. 安装add-asset-html-webpack-plugin
+
+   `npm i add-asset-html-webpack-plugin -D`
+
+4. 配置插件自动添加script标签到HTML中
+
+   ```js
+   new AddAssetHtmlWebpackPlugin({
+     filepath: path.resolve(__dirname, '../dist/vue_dll.js')
+   })
+   ```
    
