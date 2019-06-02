@@ -69,7 +69,8 @@ module.exports = {
     new MiniCssExtractPlugin({
       // placeholders
       filename: '[name].css'
-    })
+    }),
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
   ],
   module: {
     noParse: /jquery|bootstrap/,

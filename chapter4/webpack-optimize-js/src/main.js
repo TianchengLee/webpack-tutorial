@@ -1,5 +1,13 @@
+import moment from 'moment'
+// 手动引入语言包
+import 'moment/locale/zh-cn'
+// 设置语言
+moment.locale('zh-CN')
+console.log(moment().subtract(6, 'days').calendar())
+
+
 // 静态导入
-import $ from 'jquery'
+// import $ from 'jquery'
 // import和export必须写在顶级作用域中,否则会报错,因为是静态导入
 // let a = 1
 // if (a = 1) {
@@ -8,17 +16,17 @@ import $ from 'jquery'
 //   import $ from 'webpack'
 // }
 
-import 'bootstrap'
+// import 'bootstrap'
 
 // 需求: 当用户点击按钮时  添加一个div
-$(function() {
-  $('#btn').click(function() {
-    $('<div></div>').html('我是main').appendTo('body')
-  })
-})
+// $(function() {
+//   $('#btn').click(function() {
+//     $('<div></div>').html('我是main').appendTo('body')
+//   })
+// })
 
-import a from './a.js'
-console.log(a.name)
+// import a from './a.js'
+// console.log(a.name)
 
 // window.onload = function() {
 //   document.getElementById('btn').onclick = function() {
