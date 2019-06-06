@@ -5,7 +5,7 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 const homeComponent = {
-  template: '<h2>我是homeaaa页面</h2>'
+  template: '<h2>我是homeaaa页面,你好哇!!!黑马程序员!!!!!!嘿嘿嘿!!!哇 好厉害哦!</h2>'
 }
 
 const newsComponent = {

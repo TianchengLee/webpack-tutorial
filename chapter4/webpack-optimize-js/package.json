@@ -8,6 +8,7 @@
     "buildcustom": "webpack --config webpack.custom.config.js",
     "build": "webpack --config ./build/webpack.prod.js",
     "build:vue": "webpack --config ./build/webpack.vue.js",
+    "build:react": "webpack --config ./build/webpack.react.js",
     "dev-build": "webpack --config ./build/webpack.dev.js",
     "watch": "webpack --watch",
     "dev2": "webpack-dev-server --compress --hot --port 5000 --open --contentBase src",
@@ -59,6 +60,8 @@
     "html-withimg-loader": "^0.1.16",
     "jquery": "^3.4.1",
     "moment": "^2.24.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "vue": "^2.6.10",
     "vue-router": "^3.0.6"
   }

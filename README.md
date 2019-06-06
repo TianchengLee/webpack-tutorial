@@ -1321,7 +1321,7 @@ module: {
 
    ```js
    new AddAssetHtmlWebpackPlugin({
-     filepath: path.resolve(__dirname, '../dist/vue_dll.js')
+     filepath: path.resolve(__dirname, '../dist/react_dll.js')
    })
    ```
    

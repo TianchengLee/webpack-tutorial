@@ -34,6 +34,7 @@ module.exports = {
   },
   entry: {
     main: './src/main.js'
+    // main: './src/main.react.js'
   },
   // entry: {
   //   main: './src/main.js',
@@ -45,7 +46,7 @@ module.exports = {
     // path: path.resolve(__dirname, './dist/'),
     path: path.join(__dirname, '..', './dist/'),
     // filename: 'bundle.js',
-    filename: '[name].bundle.js',
+    filename: '[name].[contenthash:8].bundle.js',
     publicPath: '/'
   },
   // 开启监视模式, 此时执行webpack指令进行打包会监视文件变化自动打包
