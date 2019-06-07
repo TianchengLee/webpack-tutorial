@@ -1,0 +1,799 @@
+{
+  "errors": [],
+  "warnings": [],
+  "version": "4.30.0",
+  "hash": "86f2ae7198f0233d2b0c",
+  "time": 1314,
+  "builtAt": 1559883892956,
+  "publicPath": "/",
+  "outputPath": "C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\dist\\",
+  "assetsByChunkName": {
+    "main": "main.f06b300d.bundle.js"
+  },
+  "assets": [
+    {
+      "name": "assets\\logo.png",
+      "size": 8046,
+      "chunks": [],
+      "chunkNames": [],
+      "emitted": true
+    },
+    {
+      "name": "index.html",
+      "size": 593,
+      "chunks": [],
+      "chunkNames": [],
+      "emitted": true
+    },
+    {
+      "name": "main.f06b300d.bundle.js",
+      "size": 1363,
+      "chunks": [
+        0
+      ],
+      "chunkNames": [
+        "main"
+      ],
+      "emitted": true
+    },
+    {
+      "name": "vue_dll.js",
+      "size": 146292,
+      "chunks": [],
+      "chunkNames": [],
+      "emitted": true
+    }
+  ],
+  "filteredAssets": 0,
+  "entrypoints": {
+    "main": {
+      "chunks": [
+        0
+      ],
+      "assets": [
+        "main.f06b300d.bundle.js"
+      ],
+      "children": {},
+      "childAssets": {}
+    }
+  },
+  "namedChunkGroups": {
+    "main": {
+      "chunks": [
+        0
+      ],
+      "assets": [
+        "main.f06b300d.bundle.js"
+      ],
+      "children": {},
+      "childAssets": {}
+    }
+  },
+  "chunks": [
+    {
+      "id": 0,
+      "rendered": true,
+      "initial": true,
+      "entry": true,
+      "size": 2062,
+      "names": [
+        "main"
+      ],
+      "files": [
+        "main.f06b300d.bundle.js"
+      ],
+      "hash": "8e5df0a74971f4330efb",
+      "siblings": [],
+      "parents": [],
+      "children": [],
+      "childrenByOrder": {},
+      "modules": [
+        {
+          "id": 0,
+          "identifier": "delegated 2 from dll-reference vue_dll",
+          "name": "delegated ./node_modules/vue/dist/vue.js from dll-reference vue_dll",
+          "index": 1,
+          "index2": 1,
+          "size": 42,
+          "built": true,
+          "optional": false,
+          "prefetched": false,
+          "chunks": [
+            0
+          ],
+          "issuer": "C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\node_modules\\babel-loader\\lib\\index.js!C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\src\\main.js",
+          "issuerId": 3,
+          "issuerName": "./src/main.js",
+          "issuerPath": [
+            {
+              "id": 3,
+              "identifier": "C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\node_modules\\babel-loader\\lib\\index.js!C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\src\\main.js",
+              "name": "./src/main.js",
+              "profile": {
+                "factory": 77,
+                "building": 954
+              }
+            }
+          ],
+          "profile": {
+            "factory": 33,
+            "building": 0,
+            "dependencies": 1
+          },
+          "failed": false,
+          "errors": 0,
+          "warnings": 0,
+          "assets": [],
+          "reasons": [
+            {
+              "moduleId": 3,
+              "moduleIdentifier": "C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\node_modules\\babel-loader\\lib\\index.js!C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\src\\main.js",
+              "module": "./src/main.js",
+              "moduleName": "./src/main.js",
+              "type": "harmony side effect evaluation",
+              "userRequest": "vue/dist/vue.js",
+              "loc": "2:0-34"
+            },
+            {
+              "moduleId": 3,
+              "moduleIdentifier": "C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\node_modules\\babel-loader\\lib\\index.js!C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\src\\main.js",
+              "module": "./src/main.js",
+              "moduleName": "./src/main.js",
+              "type": "harmony import specifier",
+              "userRequest": "vue/dist/vue.js",
+              "loc": "5:0-3"
+            },
+            {
+              "moduleId": 3,
+              "moduleIdentifier": "C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\node_modules\\babel-loader\\lib\\index.js!C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\src\\main.js",
+              "module": "./src/main.js",
+              "moduleName": "./src/main.js",
+              "type": "harmony import specifier",
+              "userRequest": "vue/dist/vue.js",
+              "loc": "21:4-7"
+            }
+          ],
+          "usedExports": true,
+          "providedExports": null,
+          "optimizationBailout": [
+            "ModuleConcatenation bailout: Module is not an ECMAScript module"
+          ],
+          "depth": 1
+        },
+        {
+          "id": 1,
+          "identifier": "delegated 6 from dll-reference vue_dll",
+          "name": "delegated ./node_modules/vue-router/dist/vue-router.esm.js from dll-reference vue_dll",
+          "index": 3,
+          "index2": 2,
+          "size": 42,
+          "built": true,
+          "optional": false,
+          "prefetched": false,
+          "chunks": [
+            0
+          ],
+          "issuer": "C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\node_modules\\babel-loader\\lib\\index.js!C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\src\\main.js",
+          "issuerId": 3,
+          "issuerName": "./src/main.js",
+          "issuerPath": [
+            {
+              "id": 3,
+              "identifier": "C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\node_modules\\babel-loader\\lib\\index.js!C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\src\\main.js",
+              "name": "./src/main.js",
+              "profile": {
+                "factory": 77,
+                "building": 954
+              }
+            }
+          ],
+          "profile": {
+            "factory": 33,
+            "building": 0,
+            "dependencies": 1
+          },
+          "failed": false,
+          "errors": 0,
+          "warnings": 0,
+          "assets": [],
+          "reasons": [
+            {
+              "moduleId": 3,
+              "moduleIdentifier": "C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\node_modules\\babel-loader\\lib\\index.js!C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\src\\main.js",
+              "module": "./src/main.js",
+              "moduleName": "./src/main.js",
+              "type": "harmony side effect evaluation",
+              "userRequest": "vue-router",
+              "loc": "4:0-35"
+            },
+            {
+              "moduleId": 3,
+              "moduleIdentifier": "C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\node_modules\\babel-loader\\lib\\index.js!C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\src\\main.js",
+              "module": "./src/main.js",
+              "moduleName": "./src/main.js",
+              "type": "harmony import specifier",
+              "userRequest": "vue-router",
+              "loc": "5:8-17"
+            },
+            {
+              "moduleId": 3,
+              "moduleIdentifier": "C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\node_modules\\babel-loader\\lib\\index.js!C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\src\\main.js",
+              "module": "./src/main.js",
+              "moduleName": "./src/main.js",
+              "type": "harmony import specifier",
+              "userRequest": "vue-router",
+              "loc": "12:17-26"
+            }
+          ],
+          "usedExports": true,
+          "providedExports": [
+            "default"
+          ],
+          "optimizationBailout": [
+            "ModuleConcatenation bailout: Module is not an ECMAScript module"
+          ],
+          "depth": 1
+        },
+        {
+          "id": 2,
+          "identifier": "external \"vue_dll\"",
+          "name": "external \"vue_dll\"",
+          "index": 2,
+          "index2": 0,
+          "size": 42,
+          "built": true,
+          "optional": false,
+          "prefetched": false,
+          "chunks": [
+            0
+          ],
+          "issuer": "delegated 2 from dll-reference vue_dll",
+          "issuerId": 0,
+          "issuerName": "delegated ./node_modules/vue/dist/vue.js from dll-reference vue_dll",
+          "issuerPath": [
+            {
+              "id": 3,
+              "identifier": "C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\node_modules\\babel-loader\\lib\\index.js!C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\src\\main.js",
+              "name": "./src/main.js",
+              "profile": {
+                "factory": 77,
+                "building": 954
+              }
+            },
+            {
+              "id": 0,
+              "identifier": "delegated 2 from dll-reference vue_dll",
+              "name": "delegated ./node_modules/vue/dist/vue.js from dll-reference vue_dll",
+              "profile": {
+                "factory": 33,
+                "building": 0,
+                "dependencies": 1
+              }
+            }
+          ],
+          "profile": {
+            "factory": 0,
+            "building": 1
+          },
+          "failed": false,
+          "errors": 0,
+          "warnings": 0,
+          "assets": [],
+          "reasons": [
+            {
+              "moduleId": 0,
+              "moduleIdentifier": "delegated 2 from dll-reference vue_dll",
+              "module": "delegated ./node_modules/vue/dist/vue.js from dll-reference vue_dll",
+              "moduleName": "delegated ./node_modules/vue/dist/vue.js from dll-reference vue_dll",
+              "type": "delegated source",
+              "userRequest": "dll-reference vue_dll"
+            },
+            {
+              "moduleId": 1,
+              "moduleIdentifier": "delegated 6 from dll-reference vue_dll",
+              "module": "delegated ./node_modules/vue-router/dist/vue-router.esm.js from dll-reference vue_dll",
+              "moduleName": "delegated ./node_modules/vue-router/dist/vue-router.esm.js from dll-reference vue_dll",
+              "type": "delegated source",
+              "userRequest": "dll-reference vue_dll"
+            }
+          ],
+          "usedExports": true,
+          "providedExports": null,
+          "optimizationBailout": [
+            "ModuleConcatenation bailout: Module is not an ECMAScript module"
+          ],
+          "depth": 2
+        },
+        {
+          "id": 3,
+          "identifier": "C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\node_modules\\babel-loader\\lib\\index.js!C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\src\\main.js",
+          "name": "./src/main.js",
+          "index": 0,
+          "index2": 3,
+          "size": 1936,
+          "cacheable": true,
+          "built": true,
+          "optional": false,
+          "prefetched": false,
+          "chunks": [
+            0
+          ],
+          "issuer": null,
+          "issuerId": null,
+          "issuerName": null,
+          "issuerPath": null,
+          "profile": {
+            "factory": 77,
+            "building": 954
+          },
+          "failed": false,
+          "errors": 0,
+          "warnings": 0,
+          "assets": [],
+          "reasons": [
+            {
+              "moduleId": null,
+              "moduleIdentifier": null,
+              "module": null,
+              "moduleName": null,
+              "type": "single entry",
+              "userRequest": "./src/main.js",
+              "loc": "main"
+            }
+          ],
+          "usedExports": true,
+          "providedExports": [],
+          "optimizationBailout": [
+            "ModuleConcatenation bailout: Module is an entry point"
+          ],
+          "depth": 0,
+          "source": "// import vue from 'vue' // runtime-only 的 vue 包\nimport Vue from 'vue/dist/vue.js'; // 完整版的vuejs\n\nimport VueRouter from 'vue-router';\nVue.use(VueRouter);\nvar homeComponent = {\n  template: '<h2>我是homeaaa页面,你好哇!!!黑马程序员!!!!!!嘿嘿嘿!!!哇 好厉害哦!</h2>'\n};\nvar newsComponent = {\n  template: '<h2>我是newsheiheihei页面</h2>'\n};\nvar router = new VueRouter({\n  routes: [{\n    path: '/home',\n    component: homeComponent\n  }, {\n    path: '/news',\n    component: newsComponent\n  }]\n});\nnew Vue({\n  el: '#app',\n  data: {\n    msg: 'helloworld'\n  },\n  router: router\n}); // import moment from 'moment'\n// // 手动引入语言包\n// import 'moment/locale/zh-cn'\n// // 设置语言\n// moment.locale('zh-CN')\n// console.log(moment().subtract(6, 'days').calendar())\n// 静态导入\n// import $ from 'jquery'\n// import和export必须写在顶级作用域中,否则会报错,因为是静态导入\n// let a = 1\n// if (a = 1) {\n//   import $ from 'jquery'\n// } else {\n//   import $ from 'webpack'\n// }\n// import 'bootstrap'\n// 需求: 当用户点击按钮时  添加一个div\n// $(function() {\n//   $('#btn').click(function() {\n//     $('<div></div>').html('我是main').appendTo('body')\n//   })\n// })\n// import a from './a.js'\n// console.log(a.name)\n// window.onload = function() {\n//   document.getElementById('btn').onclick = function() {\n//     // 当用户点击按钮时才会执行\n//     $('<div></div>').html('我是main').appendTo('body')\n//   }\n// }\n// import('jquery') 其实返回的就是一个promise对象\n// function getComponent() {\n//   return import('jquery').then(({ default: $ }) => {\n//     // 执行resolve时就表示jQuery导入完成了\n//     return $('<div></div>').html('我是main')\n//   })\n// }\n// getComponent().then(item => {\n//   item.appendTo('body')\n// })\n// window.onload = function () {\n//   document.getElementById('btn').onclick = function () {\n//     // 当用户点击按钮时才会执行\n//     getComponent().then(item => {\n//       item.appendTo('body')\n//     })\n//   }\n// }\n// 动态导入\n// function getComponent() {\n//   return import('jquery').then(({ default: $ }) => {\n//     return $('<div></div>').html('我是main')\n//   })\n// }"
+        }
+      ],
+      "filteredModules": 0,
+      "origins": [
+        {
+          "module": "",
+          "moduleIdentifier": "",
+          "moduleName": "",
+          "loc": "main",
+          "request": "./src/main.js",
+          "reasons": []
+        }
+      ]
+    }
+  ],
+  "modules": [
+    {
+      "id": 0,
+      "identifier": "delegated 2 from dll-reference vue_dll",
+      "name": "delegated ./node_modules/vue/dist/vue.js from dll-reference vue_dll",
+      "index": 1,
+      "index2": 1,
+      "size": 42,
+      "built": true,
+      "optional": false,
+      "prefetched": false,
+      "chunks": [
+        0
+      ],
+      "issuer": "C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\node_modules\\babel-loader\\lib\\index.js!C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\src\\main.js",
+      "issuerId": 3,
+      "issuerName": "./src/main.js",
+      "issuerPath": [
+        {
+          "id": 3,
+          "identifier": "C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\node_modules\\babel-loader\\lib\\index.js!C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\src\\main.js",
+          "name": "./src/main.js",
+          "profile": {
+            "factory": 77,
+            "building": 954
+          }
+        }
+      ],
+      "profile": {
+        "factory": 33,
+        "building": 0,
+        "dependencies": 1
+      },
+      "failed": false,
+      "errors": 0,
+      "warnings": 0,
+      "assets": [],
+      "reasons": [
+        {
+          "moduleId": 3,
+          "moduleIdentifier": "C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\node_modules\\babel-loader\\lib\\index.js!C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\src\\main.js",
+          "module": "./src/main.js",
+          "moduleName": "./src/main.js",
+          "type": "harmony side effect evaluation",
+          "userRequest": "vue/dist/vue.js",
+          "loc": "2:0-34"
+        },
+        {
+          "moduleId": 3,
+          "moduleIdentifier": "C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\node_modules\\babel-loader\\lib\\index.js!C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\src\\main.js",
+          "module": "./src/main.js",
+          "moduleName": "./src/main.js",
+          "type": "harmony import specifier",
+          "userRequest": "vue/dist/vue.js",
+          "loc": "5:0-3"
+        },
+        {
+          "moduleId": 3,
+          "moduleIdentifier": "C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\node_modules\\babel-loader\\lib\\index.js!C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\src\\main.js",
+          "module": "./src/main.js",
+          "moduleName": "./src/main.js",
+          "type": "harmony import specifier",
+          "userRequest": "vue/dist/vue.js",
+          "loc": "21:4-7"
+        }
+      ],
+      "usedExports": true,
+      "providedExports": null,
+      "optimizationBailout": [
+        "ModuleConcatenation bailout: Module is not an ECMAScript module"
+      ],
+      "depth": 1
+    },
+    {
+      "id": 1,
+      "identifier": "delegated 6 from dll-reference vue_dll",
+      "name": "delegated ./node_modules/vue-router/dist/vue-router.esm.js from dll-reference vue_dll",
+      "index": 3,
+      "index2": 2,
+      "size": 42,
+      "built": true,
+      "optional": false,
+      "prefetched": false,
+      "chunks": [
+        0
+      ],
+      "issuer": "C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\node_modules\\babel-loader\\lib\\index.js!C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\src\\main.js",
+      "issuerId": 3,
+      "issuerName": "./src/main.js",
+      "issuerPath": [
+        {
+          "id": 3,
+          "identifier": "C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\node_modules\\babel-loader\\lib\\index.js!C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\src\\main.js",
+          "name": "./src/main.js",
+          "profile": {
+            "factory": 77,
+            "building": 954
+          }
+        }
+      ],
+      "profile": {
+        "factory": 33,
+        "building": 0,
+        "dependencies": 1
+      },
+      "failed": false,
+      "errors": 0,
+      "warnings": 0,
+      "assets": [],
+      "reasons": [
+        {
+          "moduleId": 3,
+          "moduleIdentifier": "C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\node_modules\\babel-loader\\lib\\index.js!C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\src\\main.js",
+          "module": "./src/main.js",
+          "moduleName": "./src/main.js",
+          "type": "harmony side effect evaluation",
+          "userRequest": "vue-router",
+          "loc": "4:0-35"
+        },
+        {
+          "moduleId": 3,
+          "moduleIdentifier": "C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\node_modules\\babel-loader\\lib\\index.js!C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\src\\main.js",
+          "module": "./src/main.js",
+          "moduleName": "./src/main.js",
+          "type": "harmony import specifier",
+          "userRequest": "vue-router",
+          "loc": "5:8-17"
+        },
+        {
+          "moduleId": 3,
+          "moduleIdentifier": "C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\node_modules\\babel-loader\\lib\\index.js!C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\src\\main.js",
+          "module": "./src/main.js",
+          "moduleName": "./src/main.js",
+          "type": "harmony import specifier",
+          "userRequest": "vue-router",
+          "loc": "12:17-26"
+        }
+      ],
+      "usedExports": true,
+      "providedExports": [
+        "default"
+      ],
+      "optimizationBailout": [
+        "ModuleConcatenation bailout: Module is not an ECMAScript module"
+      ],
+      "depth": 1
+    },
+    {
+      "id": 2,
+      "identifier": "external \"vue_dll\"",
+      "name": "external \"vue_dll\"",
+      "index": 2,
+      "index2": 0,
+      "size": 42,
+      "built": true,
+      "optional": false,
+      "prefetched": false,
+      "chunks": [
+        0
+      ],
+      "issuer": "delegated 2 from dll-reference vue_dll",
+      "issuerId": 0,
+      "issuerName": "delegated ./node_modules/vue/dist/vue.js from dll-reference vue_dll",
+      "issuerPath": [
+        {
+          "id": 3,
+          "identifier": "C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\node_modules\\babel-loader\\lib\\index.js!C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\src\\main.js",
+          "name": "./src/main.js",
+          "profile": {
+            "factory": 77,
+            "building": 954
+          }
+        },
+        {
+          "id": 0,
+          "identifier": "delegated 2 from dll-reference vue_dll",
+          "name": "delegated ./node_modules/vue/dist/vue.js from dll-reference vue_dll",
+          "profile": {
+            "factory": 33,
+            "building": 0,
+            "dependencies": 1
+          }
+        }
+      ],
+      "profile": {
+        "factory": 0,
+        "building": 1
+      },
+      "failed": false,
+      "errors": 0,
+      "warnings": 0,
+      "assets": [],
+      "reasons": [
+        {
+          "moduleId": 0,
+          "moduleIdentifier": "delegated 2 from dll-reference vue_dll",
+          "module": "delegated ./node_modules/vue/dist/vue.js from dll-reference vue_dll",
+          "moduleName": "delegated ./node_modules/vue/dist/vue.js from dll-reference vue_dll",
+          "type": "delegated source",
+          "userRequest": "dll-reference vue_dll"
+        },
+        {
+          "moduleId": 1,
+          "moduleIdentifier": "delegated 6 from dll-reference vue_dll",
+          "module": "delegated ./node_modules/vue-router/dist/vue-router.esm.js from dll-reference vue_dll",
+          "moduleName": "delegated ./node_modules/vue-router/dist/vue-router.esm.js from dll-reference vue_dll",
+          "type": "delegated source",
+          "userRequest": "dll-reference vue_dll"
+        }
+      ],
+      "usedExports": true,
+      "providedExports": null,
+      "optimizationBailout": [
+        "ModuleConcatenation bailout: Module is not an ECMAScript module"
+      ],
+      "depth": 2
+    },
+    {
+      "id": 3,
+      "identifier": "C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\node_modules\\babel-loader\\lib\\index.js!C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\src\\main.js",
+      "name": "./src/main.js",
+      "index": 0,
+      "index2": 3,
+      "size": 1936,
+      "cacheable": true,
+      "built": true,
+      "optional": false,
+      "prefetched": false,
+      "chunks": [
+        0
+      ],
+      "issuer": null,
+      "issuerId": null,
+      "issuerName": null,
+      "issuerPath": null,
+      "profile": {
+        "factory": 77,
+        "building": 954
+      },
+      "failed": false,
+      "errors": 0,
+      "warnings": 0,
+      "assets": [],
+      "reasons": [
+        {
+          "moduleId": null,
+          "moduleIdentifier": null,
+          "module": null,
+          "moduleName": null,
+          "type": "single entry",
+          "userRequest": "./src/main.js",
+          "loc": "main"
+        }
+      ],
+      "usedExports": true,
+      "providedExports": [],
+      "optimizationBailout": [
+        "ModuleConcatenation bailout: Module is an entry point"
+      ],
+      "depth": 0,
+      "source": "// import vue from 'vue' // runtime-only 的 vue 包\nimport Vue from 'vue/dist/vue.js'; // 完整版的vuejs\n\nimport VueRouter from 'vue-router';\nVue.use(VueRouter);\nvar homeComponent = {\n  template: '<h2>我是homeaaa页面,你好哇!!!黑马程序员!!!!!!嘿嘿嘿!!!哇 好厉害哦!</h2>'\n};\nvar newsComponent = {\n  template: '<h2>我是newsheiheihei页面</h2>'\n};\nvar router = new VueRouter({\n  routes: [{\n    path: '/home',\n    component: homeComponent\n  }, {\n    path: '/news',\n    component: newsComponent\n  }]\n});\nnew Vue({\n  el: '#app',\n  data: {\n    msg: 'helloworld'\n  },\n  router: router\n}); // import moment from 'moment'\n// // 手动引入语言包\n// import 'moment/locale/zh-cn'\n// // 设置语言\n// moment.locale('zh-CN')\n// console.log(moment().subtract(6, 'days').calendar())\n// 静态导入\n// import $ from 'jquery'\n// import和export必须写在顶级作用域中,否则会报错,因为是静态导入\n// let a = 1\n// if (a = 1) {\n//   import $ from 'jquery'\n// } else {\n//   import $ from 'webpack'\n// }\n// import 'bootstrap'\n// 需求: 当用户点击按钮时  添加一个div\n// $(function() {\n//   $('#btn').click(function() {\n//     $('<div></div>').html('我是main').appendTo('body')\n//   })\n// })\n// import a from './a.js'\n// console.log(a.name)\n// window.onload = function() {\n//   document.getElementById('btn').onclick = function() {\n//     // 当用户点击按钮时才会执行\n//     $('<div></div>').html('我是main').appendTo('body')\n//   }\n// }\n// import('jquery') 其实返回的就是一个promise对象\n// function getComponent() {\n//   return import('jquery').then(({ default: $ }) => {\n//     // 执行resolve时就表示jQuery导入完成了\n//     return $('<div></div>').html('我是main')\n//   })\n// }\n// getComponent().then(item => {\n//   item.appendTo('body')\n// })\n// window.onload = function () {\n//   document.getElementById('btn').onclick = function () {\n//     // 当用户点击按钮时才会执行\n//     getComponent().then(item => {\n//       item.appendTo('body')\n//     })\n//   }\n// }\n// 动态导入\n// function getComponent() {\n//   return import('jquery').then(({ default: $ }) => {\n//     return $('<div></div>').html('我是main')\n//   })\n// }"
+    }
+  ],
+  "filteredModules": 0,
+  "children": [
+    {
+      "errors": [],
+      "warnings": [],
+      "publicPath": "/",
+      "outputPath": "C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\dist\\",
+      "assetsByChunkName": {},
+      "assets": [
+        {
+          "name": "index.html",
+          "size": 4238,
+          "chunks": [
+            0
+          ],
+          "chunkNames": [],
+          "emitted": false
+        }
+      ],
+      "filteredAssets": 0,
+      "entrypoints": {
+        "undefined": {
+          "chunks": [
+            0
+          ],
+          "assets": [
+            "index.html"
+          ],
+          "children": {},
+          "childAssets": {}
+        }
+      },
+      "namedChunkGroups": {
+        "undefined": {
+          "chunks": [
+            0
+          ],
+          "assets": [
+            "index.html"
+          ],
+          "children": {},
+          "childAssets": {}
+        }
+      },
+      "chunks": [
+        {
+          "id": 0,
+          "rendered": true,
+          "initial": true,
+          "entry": true,
+          "size": 522,
+          "names": [],
+          "files": [
+            "index.html"
+          ],
+          "hash": "19793510db99382818c1",
+          "siblings": [],
+          "parents": [],
+          "children": [],
+          "childrenByOrder": {},
+          "modules": [
+            {
+              "id": 0,
+              "identifier": "C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\node_modules\\html-webpack-plugin\\lib\\loader.js!C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\node_modules\\html-withimg-loader\\index.js!C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\src\\index.html",
+              "name": "./node_modules/html-webpack-plugin/lib/loader.js!./src/index.html",
+              "index": 0,
+              "index2": 0,
+              "size": 522,
+              "cacheable": true,
+              "built": true,
+              "optional": false,
+              "prefetched": false,
+              "chunks": [
+                0
+              ],
+              "issuer": null,
+              "issuerId": null,
+              "issuerName": null,
+              "issuerPath": null,
+              "profile": {
+                "factory": 43,
+                "building": 119
+              },
+              "failed": false,
+              "errors": 0,
+              "warnings": 0,
+              "assets": [],
+              "reasons": [
+                {
+                  "moduleId": null,
+                  "moduleIdentifier": null,
+                  "module": null,
+                  "moduleName": null,
+                  "type": "single entry",
+                  "userRequest": "C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\node_modules\\html-webpack-plugin\\lib\\loader.js!C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\src\\index.html"
+                }
+              ],
+              "usedExports": true,
+              "providedExports": null,
+              "optimizationBailout": [
+                "ModuleConcatenation bailout: Module is not an ECMAScript module"
+              ],
+              "depth": 0,
+              "source": "module.exports = \"<!DOCTYPE html>\\r<html lang=\\\"en\\\">\\r<head>\\r  <meta charset=\\\"UTF-8\\\">\\r  <meta name=\\\"viewport\\\" content=\\\"width=device-width, initial-scale=1.0\\\">\\r  <meta http-equiv=\\\"X-UA-Compatible\\\" content=\\\"ie=edge\\\">\\r  <title>Document</title>\\r</head>\\r<body>\\r  <div id=\\\"app\\\">\\r    <h1 v-text=\\\"msg\\\"></h1>\\r    <router-link to=\\\"/home\\\">去首页</router-link>\\r    <router-link to=\\\"/news\\\">去新闻</router-link>\\r    <router-view></router-view>\\r  </div>\\r  <button id=\\\"btn\\\">点我加一个div</button>\\r</body>\\r</html>\""
+            }
+          ],
+          "filteredModules": 0,
+          "origins": [
+            {
+              "module": "",
+              "moduleIdentifier": "",
+              "moduleName": "",
+              "loc": "",
+              "request": "C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\node_modules\\html-webpack-plugin\\lib\\loader.js!C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\src\\index.html",
+              "reasons": []
+            }
+          ]
+        }
+      ],
+      "modules": [
+        {
+          "id": 0,
+          "identifier": "C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\node_modules\\html-webpack-plugin\\lib\\loader.js!C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\node_modules\\html-withimg-loader\\index.js!C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\src\\index.html",
+          "name": "./node_modules/html-webpack-plugin/lib/loader.js!./src/index.html",
+          "index": 0,
+          "index2": 0,
+          "size": 522,
+          "cacheable": true,
+          "built": true,
+          "optional": false,
+          "prefetched": false,
+          "chunks": [
+            0
+          ],
+          "issuer": null,
+          "issuerId": null,
+          "issuerName": null,
+          "issuerPath": null,
+          "profile": {
+            "factory": 43,
+            "building": 119
+          },
+          "failed": false,
+          "errors": 0,
+          "warnings": 0,
+          "assets": [],
+          "reasons": [
+            {
+              "moduleId": null,
+              "moduleIdentifier": null,
+              "module": null,
+              "moduleName": null,
+              "type": "single entry",
+              "userRequest": "C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\node_modules\\html-webpack-plugin\\lib\\loader.js!C:\\Users\\itheima\\Desktop\\1-11\\resource\\chapter4\\webpack-optimize-js\\src\\index.html"
+            }
+          ],
+          "usedExports": true,
+          "providedExports": null,
+          "optimizationBailout": [
+            "ModuleConcatenation bailout: Module is not an ECMAScript module"
+          ],
+          "depth": 0,
+          "source": "module.exports = \"<!DOCTYPE html>\\r<html lang=\\\"en\\\">\\r<head>\\r  <meta charset=\\\"UTF-8\\\">\\r  <meta name=\\\"viewport\\\" content=\\\"width=device-width, initial-scale=1.0\\\">\\r  <meta http-equiv=\\\"X-UA-Compatible\\\" content=\\\"ie=edge\\\">\\r  <title>Document</title>\\r</head>\\r<body>\\r  <div id=\\\"app\\\">\\r    <h1 v-text=\\\"msg\\\"></h1>\\r    <router-link to=\\\"/home\\\">去首页</router-link>\\r    <router-link to=\\\"/news\\\">去新闻</router-link>\\r    <router-view></router-view>\\r  </div>\\r  <button id=\\\"btn\\\">点我加一个div</button>\\r</body>\\r</html>\""
+        }
+      ],
+      "filteredModules": 0,
+      "children": [],
+      "name": "html-webpack-plugin for \"index.html\""
+    }
+  ]
+}

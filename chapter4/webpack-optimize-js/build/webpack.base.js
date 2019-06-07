@@ -5,6 +5,8 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const webpack = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const AddAssetHtmlWebpackPlugin = require('add-asset-html-webpack-plugin')
+const HappyPack = require('happypack')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 // webpack的配置文件遵循着CommonJS规范
 module.exports = {
@@ -78,7 +80,11 @@ module.exports = {
     }),
     new AddAssetHtmlWebpackPlugin({
       filepath: path.resolve(__dirname, '../dist/vue_dll.js')
-    })
+    }),
+    // new HappyPack({
+    //   loaders: ['babel-loader']
+    // })
+    // new BundleAnalyzerPlugin()
   ],
   module: {
     noParse: /jquery|bootstrap/,
@@ -111,6 +117,7 @@ module.exports = {
       {
         test: /\.js$/,
         use: {
+          // loader: 'happypack/loader',
           loader: 'babel-loader',
           // options: {
           //   presets: ['@babel/env'],

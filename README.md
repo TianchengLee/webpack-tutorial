@@ -1332,6 +1332,8 @@ module: {
 
 由于webpack在node环境中运行打包构建，所以是单线程的模式，在打包众多资源时效率会比较低下，早期可以通过`Happypack`来实现多进程打包。当然，这个问题只出现在低版本的webpack中，现在的webpack性能已经非常强劲了，所以无需使用Happypack也可以实现高性能打包
 
+[Happypack官网]( https://github.com/amireh/happypack)
+
 引用官网原文：
 
 > **Maintenance mode notice**
