@@ -1326,6 +1326,63 @@ module: {
    ```
    
 
+## Happypack
+
+![A diagram showing the flow between HappyPack's components](assets/HappyPack_WorkFlow.png)
+
+由于webpack在node环境中运行打包构建，所以是单线程的模式，在打包众多资源时效率会比较低下，早期可以通过`Happypack`来实现多进程打包。当然，这个问题只出现在低版本的webpack中，现在的webpack性能已经非常强劲了，所以无需使用Happypack也可以实现高性能打包
+
+引用官网原文：
+
+> **Maintenance mode notice**
+>
+> My interest in the project is fading away mainly because I'm not using JavaScript as much as I was in the past. Additionally, Webpack's native performance is improving and (I hope) it will soon make this plugin unnecessary.
+>
+> See the FAQ entry about Webpack 4 and [thread-loader](https://github.com/webpack-contrib/thread-loader).
+>
+> Contributions are always welcome. Changes I make from this point will be restricted to bug-fixing. If someone wants to take over, feel free to get in touch.
+>
+> Thanks to everyone who used the library, contributed to it and helped in refining it!!!
+
+由此可以看出作者已经发现，webpack的性能已经强大到不需要使用该插件了，而且小项目使用该插件反而会导致性能损耗过大，因为开启进程是需要耗时的
+
+使用方法：
+
+1. 安装插件
+
+   `npm i -D happypack`
+
+2. 在webpack配置文件中引入插件
+
+   ```js
+   const HappyPack = require('happypack')
+   ```
+
+3. 修改loader的配置规则
+
+   ```js
+   {
+     test: /.js$/,
+     use: {
+         loader: 'happypack/loader'
+       },
+     include: path.resolve(__dirname, '../src'),
+     exclude: /node_modules/
+   }
+   ```
+
+4. 配置插件
+
+   ```js
+   new HappyPack({
+       loaders: [ 'babel-loader' ]
+   })
+   ```
+
+5. 运行打包命令
+
+   `npm run build`
+
 ## 浏览器缓存
 
 在做了众多代码分离的优化后，其目的是为了利用浏览器缓存，达到提高访问速度的效果，所以构建项目时做代码分割是必须的，例如将固定的第三方模块抽离，下次修改了业务代码，重新发布上线不重启服务器，用户再次访问服务器就不需要再次加载第三方模块了
