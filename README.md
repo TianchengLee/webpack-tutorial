@@ -1450,3 +1450,86 @@ function getComponent() {
 }
 ```
 
+
+
+# 第5章 webpack原理
+
+## 学习目标
+
+- 了解webpack打包原理
+- 了解webpack的loader原理
+- 了解webpack的插件原理
+- 了解ast抽象语法树的应用
+- 了解tapable的原理
+- 手写一个简单的webpack
+
+## 项目准备工作
+
+1. 新建一个项目，起一个炫酷的名字
+
+2. 新建`bin`目录，将打包工具主程序放入其中
+
+   主程序的顶部应当有：`#!/usr/bin/env node`标识，指定程序执行环境为node
+
+3. 在`package.json`中配置`bin`脚本
+
+   ```json
+   {
+   	"bin": "./bin/itheima-pack.js"
+   }
+   ```
+
+4. 通过`npm link`链接到全局包中，供本地测试使用
+
+## 分析webpack打包的bundle文件
+
+其内部就是自己实现了一个`__webpack_require__`函数，递归导入依赖关系
+
+```js
+(function (modules) { // webpackBootstrap
+  // The module cache
+  var installedModules = {};
+
+  // The require function
+  function __webpack_require__(moduleId) {
+
+    // Check if module is in cache
+    if (installedModules[moduleId]) {
+      return installedModules[moduleId].exports;
+    }
+    // Create a new module (and put it into the cache)
+    var module = installedModules[moduleId] = {
+      i: moduleId,
+      l: false,
+      exports: {}
+    };
+
+    // Execute the module function
+    modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+    // Flag the module as loaded
+    module.l = true;
+
+    // Return the exports of the module
+    return module.exports;
+  }
+
+  // Load entry module and return exports
+  return __webpack_require__(__webpack_require__.s = "./src/index.js");
+})
+  ({
+    "./src/index.js":
+      (function (module, exports, __webpack_require__) {
+        eval("let news = __webpack_require__(/*! ./news.js */ \"./src/news.js\")\r\nconsole.log(news.content)\n\n//# sourceURL=webpack:///./src/index.js?");
+      }),
+    "./src/message.js":
+      (function (module, exports) {
+        eval("module.exports = {\r\n  content: '今天要下雨了!!!'\r\n}\n\n//# sourceURL=webpack:///./src/message.js?");
+      }),
+    "./src/news.js":
+      (function (module, exports, __webpack_require__) {
+        eval("let message = __webpack_require__(/*! ./message.js */ \"./src/message.js\")\r\n\r\nmodule.exports = {\r\n  content: '今天有个大新闻,爆炸消息!!!内容是:' + message.content\r\n}\n\n//# sourceURL=webpack:///./src/news.js?");
+      })
+  });
+```
+

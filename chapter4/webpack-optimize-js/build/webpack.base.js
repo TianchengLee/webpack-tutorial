@@ -24,7 +24,7 @@ module.exports = {
         vendors: { // 自定义缓存组名
           test: /[\\/]node_modules[\\/]/, // 检查node_modules目录,只要模块在该目录下就使用上面配置拆分到这个组
           priority: -10, // 权重-10,决定了哪个组优先匹配,例如node_modules下有个模块要拆分,同时满足vendors和default组,此时就会分到vendors组,因为-10 > -20
-          filename: 'vendors.js'
+          // filename: 'vendors.js'
         },
         default: { // 默认缓存组名
           minChunks: 2, // 最少引用两次才会被拆分
@@ -75,12 +75,12 @@ module.exports = {
       filename: '[name].css'
     }),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    new webpack.DllReferencePlugin({
-      manifest: path.resolve(__dirname, '../dist/manifest.json')
-    }),
-    new AddAssetHtmlWebpackPlugin({
-      filepath: path.resolve(__dirname, '../dist/vue_dll.js')
-    }),
+    // new webpack.DllReferencePlugin({
+    //   manifest: path.resolve(__dirname, '../dist/manifest.json')
+    // }),
+    // new AddAssetHtmlWebpackPlugin({
+    //   filepath: path.resolve(__dirname, '../dist/vue_dll.js')
+    // }),
     // new HappyPack({
     //   loaders: ['babel-loader']
     // })
