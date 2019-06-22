@@ -12,6 +12,8 @@ class Compiler {
     this.root = process.cwd()
     // 初始化一个空对象, 存放所有的模块
     this.modules = {}
+    // 将module.rules挂载到自身
+    this.rules = config.module.rules
   }
   getSource(path) {
     return fs.readFileSync(path, 'utf-8')
@@ -21,6 +23,46 @@ class Compiler {
     // 读取模块内容
     let source = this.getSource(modulePath)
     // console.log(source)
+
+    // 读取loader
+    let readAndCallLoader = (use, obj) => {
+      let loaderPath = path.join(this.root, use)
+      let loader = require(loaderPath)
+      source = loader.call(obj, source)
+    }
+
+    // 读取rules规则, 倒序遍历
+    for (let i = this.rules.length - 1; i >= 0; i--) {
+      // console.log(this.rules[i])
+      let { test, use } = this.rules[i]
+      // 获取每一条规则,与当前modulePath进行匹配
+      // 匹配modulePath 是否符合规则,如果符合规则就要倒序遍历获取所有的loader
+      if (test.test(modulePath)) {
+        // 判断use是否为数组,如果是数组才需要倒序遍历
+        if (Array.isArray(use)) {
+          for (let j = use.length - 1; j >= 0; j--) {
+            // 每一个loader的路径
+            // console.log(path.join(this.root, use[j]))
+            // let loaderPath = path.join(this.root, use[j])
+            // let loader = require(loaderPath)
+            // source = loader(source)
+            readAndCallLoader(use[j])
+          }
+        } else if (typeof use === 'string') {
+          // use为字符串时,直接加载loader即可
+          // let loaderPath = path.join(this.root, use)
+          // let loader = require(loaderPath)
+          // source = loader(source)
+          readAndCallLoader(use)
+        } else if (use instanceof Object) {
+          // console.log(use.options)
+          // let loaderPath = path.join(this.root, use.loader)
+          // let loader = require(loaderPath)
+          // source = loader.call({ query: use.options }, source)
+          readAndCallLoader(use.loader, { query: use.options })
+        }
+      }
+    }
 
     // 准备一个依赖数组,用于存储当前模块的所有依赖
     let dependencies = []

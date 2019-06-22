@@ -1649,13 +1649,25 @@ loader到底是什么东西？能不能自己写？
    }
    ```
 
+### loader的分类
+
+不同类型的loader加载时优先级不同，优先级顺序遵循：
+
+前置 > 行内 > 普通 > 后置
+
+pre: 前置loader
+
+post: 后置loader
+
+指定Rule.enforce的属性即可设置loader的种类，不设置默认为普通loader
+
 ### 在itheima-pack中添加loader的功能
 
 通过配置loader和手写loader可以发现，其实webpack能支持loader，主要步骤如下：
 
-1. 读取webpack.config.js配置文件的module.rules配置项，进行正序迭代（rules的每项匹配规则按顺序匹配）
+1. 读取webpack.config.js配置文件的module.rules配置项，进行倒序迭代（rules的每项匹配规则按倒序匹配）
 2. 根据正则匹配到对应的文件类型，同时再批量导入loader函数
-3. 倒序迭代调用所有loader函数（loader的加载顺序从右到左）
+3. 倒序迭代调用所有loader函数（loader的加载顺序从右到左，也是倒叙）
 4. 最后返回处理后的代码
 
 在实现itheima-pack的loader功能时，同样也可以在加载每个模块时，根据rules的正则来匹配是否满足条件，如果满足条件则加载对应的loader函数并迭代调用
@@ -1663,17 +1675,18 @@ loader到底是什么东西？能不能自己写？
 depAnalyse()方法中获取到源码后，读取loader：
 
 ```js
-this.config.module.rules.forEach(rule => {
-    // console.log(rule)
-    let {test, use} = rule
+let rules = this.config.module.rules
+for (let i = rules.length - 1; i >= 0; i--) {
+    // console.log(rules[i])
+    let {test, use} = rules[i]
     if (test.test(modulePath)) {
-        for (let i = use.length - 1; i >= 0; i--) {
-            let loaderPath = path.join(this.root, use[i])
+        for (let j = use.length - 1; j >= 0; j--) {
+            let loaderPath = path.join(this.root, use[j])
             let loader = require(loaderPath)
             source = loader(source)
         }
     }
-})
+}
 ```
 
 ## 自定义插件
