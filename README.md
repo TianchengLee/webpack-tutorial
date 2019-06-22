@@ -1533,3 +1533,147 @@ function getComponent() {
   });
 ```
 
+## 自定义loader
+
+在学习给自己写的itheima-pack工具添加loader功能之前，得先学习webpack中如何自定义loader，所以学习步骤分为两大步：
+
+1. 掌握自定义webpack的loader
+2. 学习给itheima-pack添加loader功能并写一个loader
+
+webpack以及我们自己写的itheima-pack都只能处理JavaScript文件，如果需要处理其他文件，或者对JavaScript代码做一些操作，则需要用到loader。
+
+loader是webpack中四大核心概念之一，主要功能是将一段匹配规则的代码进行加工处理，生成最终的代码后输出，是webpack打包环节中非常重要的一环。
+
+> loader 可以将所有类型的文件转换为 webpack 能够处理的有效模块，然后你就可以利用 webpack 的打包能力，对它们进行处理。
+
+之前都使用过别人写好的loader，步骤大致分为：
+
+1. 装包
+2. 在webpack.config.js中配置module节点下的rules即可，例如babel-loader（省略其他配置，只论loader）
+3. （可选步骤）可能还需要其他的配置，例如babel需要配置presets和plugin
+
+```js
+const path = require('path')
+
+module.exports = {
+  entry: './src/index.js',
+  output: {
+    path: path.join(__dirname, 'dist'),
+    filename: 'bundle.js'
+  },
+  module: {
+    rules: [
+      { test: /\.js$/, use: 'babel-loader' }
+    ]
+  },
+  mode: 'development'
+}
+```
+
+### 实现一个简单的loader
+
+loader到底是什么东西？能不能自己写？
+
+答案是肯定的，loader就是一个函数，同样也可以自己来写
+
+1. 在项目根目录中新建一个目录存放自己写的loader：
+
+![1561174288710](./assets/1561174288710.png)
+
+2. 编写myloader.js，其实loader就是对外暴露一个函数
+
+   第一个参数就是loader要处理的代码
+
+   ```js
+   module.exports = function(source) {
+     console.log(source) // 只是简单打印并返回结果，不作任何处理
+     return source
+   }
+   ```
+
+3. 同样在webpack.config.js中配置自己写的loader，为了方便演示，直接匹配所有的js文件使用自己的myloader进行处理
+
+   ```js
+   const path = require('path')
+   
+   module.exports = {
+     entry: './src/index.js',
+     output: {
+       path: path.join(__dirname, 'dist'),
+       filename: 'bundle.js'
+     },
+     module: {
+       rules: [
+         { test: /.js$/, use: './loaders/myloader.js' }
+       ]
+     },
+     mode: 'development'
+   }
+   ```
+
+4. 如果需要实现一个简单的loader，例如将js中所有的“今天”替换成“明天”
+
+   只需要修改myloader.js的内容如下即可
+
+   ```js
+   module.exports = function(source) {
+     return source.replace(/今天/g, '明天')
+   }
+   ```
+
+5. 同时也可以配置多个loader对代码进行处理
+
+   ```js
+   const path = require('path')
+   
+   module.exports = {
+     entry: './src/index.js',
+     output: {
+       path: path.join(__dirname, 'dist'),
+       filename: 'bundle.js'
+     },
+     module: {
+       rules: [
+         { test: /.js$/, use: ['./loaders/myloader2.js', './loaders/myloader.js'] }
+       ]
+     },
+     mode: 'development'
+   }
+   ```
+
+6. myloader2.js
+
+   ```js
+   module.exports = function(source) {
+     return source.replace(/爆炸/g, '小道')
+   }
+   ```
+
+### 在itheima-pack中添加loader的功能
+
+通过配置loader和手写loader可以发现，其实webpack能支持loader，主要步骤如下：
+
+1. 读取webpack.config.js配置文件的module.rules配置项，进行正序迭代（rules的每项匹配规则按顺序匹配）
+2. 根据正则匹配到对应的文件类型，同时再批量导入loader函数
+3. 倒序迭代调用所有loader函数（loader的加载顺序从右到左）
+4. 最后返回处理后的代码
+
+在实现itheima-pack的loader功能时，同样也可以在加载每个模块时，根据rules的正则来匹配是否满足条件，如果满足条件则加载对应的loader函数并迭代调用
+
+depAnalyse()方法中获取到源码后，读取loader：
+
+```js
+this.config.module.rules.forEach(rule => {
+    // console.log(rule)
+    let {test, use} = rule
+    if (test.test(modulePath)) {
+        for (let i = use.length - 1; i >= 0; i--) {
+            let loaderPath = path.join(this.root, use[i])
+            let loader = require(loaderPath)
+            source = loader(source)
+        }
+    }
+})
+```
+
+## 自定义插件
