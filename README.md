@@ -1700,7 +1700,7 @@ for (let i = rules.length - 1; i >= 0; i--) {
 1. 掌握自定义webpack的plugin
 2. 学习给itheima-pack添加plugin功能并写一个plugin
 
-插件接口可以帮助用户直接触及到编译过程(compilation process)。 插件可以将处理函数(handler)注册到编译过程中的不同事件点上运行的生命周期钩子函数上。 当执行每个钩子时， 插件能够完全访问到编译(compilation)的当前状态。
+>  插件接口可以帮助用户直接触及到编译过程(compilation process)。 插件可以将处理函数(handler)注册到编译过程中的不同事件点上运行的生命周期钩子函数上。 当执行每个钩子时， 插件能够完全访问到编译(compilation)的当前状态。
 
 简单理解，自定义插件就是在webpack编译过程的生命周期钩子中，进行编码开发，实现一些功能。
 
@@ -1716,7 +1716,7 @@ for (let i = rules.length - 1; i >= 0; i--) {
 
 |         钩子         |                             作用                             |              参数              |       类型        |
 | :------------------: | :----------------------------------------------------------: | :----------------------------: | :---------------: |
-|   **entryOption**    |             在处理了webpack选项的entry配置后调用             |         context, entry         |   SyncBailHook    |
+|     entryOption      |             在处理了webpack选项的entry配置后调用             |         context, entry         |   SyncBailHook    |
 |   **afterPlugins**   |                 在初始化内部插件列表后调用。                 |            compiler            |     SyncHook      |
 |    afterResolvers    |                  Compiler初始化完毕后调用。                  |            compiler            |     SyncHook      |
 |     environment      | 在准备编译器环境时调用，在对配置文件中的插件进行初始化之后立即调用。 |               无               |     SyncHook      |
