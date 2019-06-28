@@ -1535,6 +1535,8 @@ function getComponent() {
 
 ## 自定义loader
 
+### 学习目标
+
 在学习给自己写的itheima-pack工具添加loader功能之前，得先学习webpack中如何自定义loader，所以学习步骤分为两大步：
 
 1. 掌握自定义webpack的loader
@@ -1690,3 +1692,65 @@ for (let i = rules.length - 1; i >= 0; i--) {
 ```
 
 ## 自定义插件
+
+### 学习目标
+
+在学习给自己写的itheima-pack工具添加plugin功能之前，得先学习webpack中如何自定义plugin，所以学习步骤分为两大步：
+
+1. 掌握自定义webpack的plugin
+2. 学习给itheima-pack添加plugin功能并写一个plugin
+
+插件接口可以帮助用户直接触及到编译过程(compilation process)。 插件可以将处理函数(handler)注册到编译过程中的不同事件点上运行的生命周期钩子函数上。 当执行每个钩子时， 插件能够完全访问到编译(compilation)的当前状态。
+
+简单理解，自定义插件就是在webpack编译过程的生命周期钩子中，进行编码开发，实现一些功能。
+
+### webpack插件的组成
+
+- 一个 JavaScript 命名函数。
+- 在插件函数的 prototype 上定义一个 apply 方法。
+- 指定一个绑定到 webpack 自身的事件钩子。
+- 处理 webpack 内部实例的特定数据。
+- 功能完成后调用 webpack 提供的回调。
+
+### 插件的生命周期钩子
+
+|         钩子         |                             作用                             |              参数              |       类型        |
+| :------------------: | :----------------------------------------------------------: | :----------------------------: | :---------------: |
+|   **entryOption**    |             在处理了webpack选项的entry配置后调用             |         context, entry         |   SyncBailHook    |
+|   **afterPlugins**   |                 在初始化内部插件列表后调用。                 |            compiler            |     SyncHook      |
+|    afterResolvers    |                  Compiler初始化完毕后调用。                  |            compiler            |     SyncHook      |
+|     environment      | 在准备编译器环境时调用，在对配置文件中的插件进行初始化之后立即调用。 |               无               |     SyncHook      |
+|   afterEnvironment   |   在environment钩子之后立即调用，当编译器环境设置完成时。    |               无               |     SyncHook      |
+|    **beforeRun**     |                   在运行Compiler之前调用。                   |            compiler            |  AsyncSeriesHook  |
+|       **run**        |                   Compiler开始工作时调用。                   |            compiler            |  AsyncSeriesHook  |
+|       watchRun       | 在新的编译被触发但在实际开始编译之前，在监视模式期间执行插件。 |            compiler            |  AsyncSeriesHook  |
+| normalModuleFactory  |               NormalModuleFactory创建后调用。                |      normalModuleFactory       |     SyncHook      |
+| contextModuleFactory |             ContextModuleFactory创建后运行插件。             |      contextModuleFactory      |     SyncHook      |
+|    beforeCompile     |               创建compilation参数后执行插件。                |       compilationParams        |  AsyncSeriesHook  |
+|       compile        |           beforeCompile在创建新编辑之前立即调用。            |       compilationParams        |     SyncHook      |
+|   thisCompilation    |       在触发compilation事件之前，在初始化编译时调用。        | compilation，compilationParams |     SyncHook      |
+|     compilation      |                 创建compilation后运行插件。                  | compilation，compilationParams |     SyncHook      |
+|       **make**       |                      在完成编译前调用。                      |          compilation           | AsyncParallelHook |
+|   **afterCompile**   |                      在完成编译后调用。                      |          compilation           |  AsyncSeriesHook  |
+|    **shouldEmit**    | 在发射assets之前调用。应该返回一个告诉是否发射出去的布尔值。 |          compilation           |   SyncBailHook    |
+|       **emit**       |                 向assets目录发射assets时调用                 |          compilation           |  AsyncSeriesHook  |
+|    **afterEmit**     |               在将assets发送到输出目录后调用。               |          compilation           |  AsyncSeriesHook  |
+|       **done**       |                       编译完成后调用。                       |             stats              |  AsyncSeriesHook  |
+|        failed        |                    如果编译失败，则调用。                    |             error              |     SyncHook      |
+|       invalid        |              在watching compilation失效时调用。              |      fileName，changeTime      |     SyncHook      |
+|      watchClose      |              在watching compilation停止时调用。              |               无               |     SyncHook      |
+
+### 实现一个简单的plugin
+
+```js
+class HelloWorldPlugin {
+  apply(compiler) {
+    compiler.hooks.done.tap('Hello World Plugin', (stats) => {
+      console.log('Hello World!');
+    });
+  }
+}
+
+module.exports = HelloWorldPlugin;
+```
+
