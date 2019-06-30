@@ -16,6 +16,7 @@
     "@babel/generator": "^7.4.4",
     "@babel/parser": "^7.4.5",
     "@babel/traverse": "^7.4.5",
-    "ejs": "^2.6.1"
+    "ejs": "^2.6.1",
+    "tapable": "^1.1.3"
   }
 }

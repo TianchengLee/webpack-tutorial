@@ -1712,7 +1712,7 @@ for (let i = rules.length - 1; i >= 0; i--) {
 - 处理 webpack 内部实例的特定数据。
 - 功能完成后调用 webpack 提供的回调。
 
-### 插件的生命周期钩子
+### webpack的生命周期钩子
 
 |         钩子         |                             作用                             |              参数              |       类型        |
 | :------------------: | :----------------------------------------------------------: | :----------------------------: | :---------------: |
@@ -1778,13 +1778,13 @@ module.exports = class HTMLPlugin {
     this.options = options
   }
   apply(compiler) {
-    compiler.hooks.afterEmit.tap('HTMLPlugin', complation => {
+    compiler.hooks.afterEmit.tap('HTMLPlugin', compilation => {
       // 根据模板读取html文件内容
       let result = fs.readFileSync(this.options.template, 'utf-8')
       // 使用cheerio来分析HTML
       let $ = cheerio.load(result)
       // 创建script标签后插入HTML中
-      Object.keys(complation.assets).forEach(item => $(`<script src="${item}"></script>`).appendTo('body'))
+      Object.keys(compilation.assets).forEach(item => $(`<script src="${item}"></script>`).appendTo('body'))
       // 转换成新的HTML并写入到dist目录中
       fs.writeFileSync(path.join(process.cwd(), 'dist', this.options.filename), $.html())
     })

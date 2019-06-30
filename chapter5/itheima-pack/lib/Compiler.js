@@ -4,6 +4,7 @@ const parser = require('@babel/parser')
 const traverse = require('@babel/traverse').default
 const generator = require('@babel/generator').default
 const ejs = require('ejs')
+const { SyncHook } = require('tapable')
 class Compiler {
   constructor(config) {
     this.config = config
@@ -14,6 +15,19 @@ class Compiler {
     this.modules = {}
     // 将module.rules挂载到自身
     this.rules = config.module.rules
+    // 先有hooks 才能调用apply
+    this.hooks = {
+      // 生命周期钩子的定义  --->  第一步
+      compile: new SyncHook(),
+      afterCompile: new SyncHook(),
+      emit: new SyncHook(),
+      afterEmit: new SyncHook(),
+      done: new SyncHook(['modules']),
+    }
+    // 获取plugins数组中的所有插件对象, 调用其apply方法
+    if (Array.isArray(this.config.plugins)) {
+      this.config.plugins.forEach(plugin => plugin.apply(this))
+    }
   }
   getSource(path) {
     return fs.readFileSync(path, 'utf-8')
@@ -113,13 +127,22 @@ class Compiler {
     fs.writeFileSync(outputPath, result)
   }
   start() {
+    // 开始编译啦!
+    this.hooks.compile.call()
     // 开始打包了!
     // 依赖的分析
     // __dirname表示的是 itheima-pack 项目中Compiler.js所在目录
     // 而非入口文件所在的目录
     // 如果需要获取执行itheima-pack指令的目录, 需要使用 process.cwd()
     this.depAnalyse(path.resolve(this.root, this.entry))
+    // 编译完成啦!
+    this.hooks.afterCompile.call()
+    // 开始发射文件啦!
+    this.hooks.emit.call()
     this.emitFile()
+    // 文件发射完了!
+    this.hooks.afterEmit.call()
+    this.hooks.done.call(this.modules)
     // console.log(this.modules)
   }
 }
