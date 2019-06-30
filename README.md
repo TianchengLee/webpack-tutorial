@@ -1742,6 +1742,8 @@ for (let i = rules.length - 1; i >= 0; i--) {
 
 ### 实现一个简单的plugin
 
+`compiler.hooks.done`表示编译完成后调用的钩子，所以只需要在这个阶段注册时间，当打包完成会自动回调这个函数
+
 ```js
 class HelloWorldPlugin {
   apply(compiler) {
@@ -1754,3 +1756,181 @@ class HelloWorldPlugin {
 module.exports = HelloWorldPlugin;
 ```
 
+### 实现一个html-webpack-plugin
+
+使用html-webpack-plugin非常简单，而且功能非常好用，可以将指定的html模板复制一份输出到dist目录下，同时会自动引入bundle.js
+
+如何自己实现？
+
+1. 编写一个自定义插件，注册`afterEmit`钩子
+2. 根据创建对象时传入的template属性来读取html模板
+3. 使用工具分析HTML，推荐使用cheerio，可以直接使用jQuery api
+4. 循环遍历webpack打包的资源文件列表，如果有多个bundle就都打包进去（可以根据需求自己修改，因为可能有chunk，一般只引入第一个即可）
+5. 输出新生成的HTML字符串到dist目录中
+
+```js
+const path = require('path')
+const fs = require('fs')
+const cheerio = require('cheerio')
+module.exports = class HTMLPlugin {
+  constructor(options) {
+    // 传入filename和template
+    this.options = options
+  }
+  apply(compiler) {
+    compiler.hooks.afterEmit.tap('HTMLPlugin', complation => {
+      // 根据模板读取html文件内容
+      let result = fs.readFileSync(this.options.template, 'utf-8')
+      // 使用cheerio来分析HTML
+      let $ = cheerio.load(result)
+      // 创建script标签后插入HTML中
+      Object.keys(complation.assets).forEach(item => $(`<script src="${item}"></script>`).appendTo('body'))
+      // 转换成新的HTML并写入到dist目录中
+      fs.writeFileSync(path.join(process.cwd(), 'dist', this.options.filename), $.html())
+    })
+  }
+}
+```
+
+**Compiler和Compilation的区别**
+
+- **compiler 对象表示不变的webpack环境，是针对webpack的**
+- **compilation 对象针对的是随时可变的项目文件，只要文件有改动，compilation就会被重新创建。**
+
+### 在itheima-pack中添加plugin的功能
+
+#### tapable简介
+
+在webpack内部实现事件流机制的核心就在于**tapable**，有了它就可以通过事件流的形式，将各个插件串联起来，tapable类似于node中的events库，核心原理也是**发布订阅模式**
+
+基本用法如下
+
+1. 定义钩子
+2. 使用者注册事件
+3. 在合适的阶段调用钩子，触发事件
+
+```js
+let { SyncHook } = require('tapable')
+class Lesson {
+  constructor() {
+    this.hooks = {
+      html: new SyncHook(['name']),
+      css: new SyncHook(['name']),
+      js: new SyncHook(['name']),
+      react: new SyncHook(['name']),
+    }
+  }
+  study() {
+    console.log('开班啦，同学们好！')
+    console.log('开始学html啦，同学们好！')
+    this.hooks.html.call('小明')
+    console.log('开始学css啦，同学们好！')
+    this.hooks.css.call('小花')
+    console.log('开始学js啦，同学们好！')
+    this.hooks.js.call('小黑')
+    console.log('开始学react啦，同学们好！')
+    this.hooks.react.call('紫阳')
+  }
+}
+
+let l = new Lesson()
+l.hooks.html.tap('html', () => {
+  console.log('我要写个淘宝！！！挣他一个亿！')
+})
+
+l.hooks.react.tap('react', (name) => {
+  console.log('我要用react构建一个属于自己的王国！' + name + '老师讲的真好！！！')
+})
+l.study()
+```
+
+通过该案例可以看出，如果需要在学习的不同阶段，做出不同的事情，可以通过发布订阅模式来完成。而tapable可以帮我们很方便的实现发布订阅模式，同时还可以在调用时传入参数。
+
+以上只是最基础的同步钩子演示，如果感兴趣，可以查阅官方文档，并练习对应的其他钩子，以下是tapable对外暴露的所有钩子：
+
+```js
+exports.Tapable = require("./Tapable");
+exports.SyncHook = require("./SyncHook");
+exports.SyncBailHook = require("./SyncBailHook");
+exports.SyncWaterfallHook = require("./SyncWaterfallHook");
+exports.SyncLoopHook = require("./SyncLoopHook");
+exports.AsyncParallelHook = require("./AsyncParallelHook");
+exports.AsyncParallelBailHook = require("./AsyncParallelBailHook");
+exports.AsyncSeriesHook = require("./AsyncSeriesHook");
+exports.AsyncSeriesBailHook = require("./AsyncSeriesBailHook");
+exports.AsyncSeriesWaterfallHook = require("./AsyncSeriesWaterfallHook");
+exports.HookMap = require("./HookMap");
+exports.MultiHook = require("./MultiHook");
+```
+
+#### 利用tapable实现itheima-pack的plugin功能
+
+在Compiler构造时，创建对应的钩子即可
+
+```js
+	// Compiler的构造函数内部定义钩子
+	this.hooks = {
+      afterPlugins: new SyncHook(),
+      beforeRun: new SyncHook(),
+      run: new SyncHook(),
+      make: new SyncHook(),
+      afterCompile: new SyncHook(),
+      shouldEmit: new SyncHook(),
+      emit: new SyncHook(),
+      afterEmit: new SyncHook(['compilation']),
+      done: new SyncHook(),
+    }
+
+    // 触发所有插件的apply方法，并传入Compiler对象
+    if (Array.isArray(this.config.plugins)) {
+      this.config.plugins.forEach(plugin => {
+        plugin.apply(this)
+      })
+    }
+```
+
+在合适的时机调用对应钩子的call方法即可，如需传入参数，可以在对应的钩子中定义好需要传入的参数，call时直接传入
+
+![1561895540321](./assets/1561895540321.png)
+
+# 第6章 课程总结
+
+- webpack基础配置
+  - 安装：本地安装即可，无需全局安装
+  - 使用：CLI的方式或配置脚本使用配置文件
+  - 配置：
+    - 开发时工具：watch、dev-server、webpack-dev-middleware、sourceMap
+    - loaders：css-loader、style-loader、less-loader、sass-loader、url-loader、babel-loader、
+    - plugins：html-webpack-plugin、clean-webpack-plugin、copy-webpack-plugin、BannerPlugin
+- webpack高级配置
+  - img标签资源处理
+  - 多页应用打包
+  - 第三方库的引入方式
+  - 区分配置文件打包
+  - 环境变量
+  - proxy
+  - HMR
+- webpack性能优化
+  - webpack自带优化详解
+  - css优化
+    - 提取到单独文件
+    - 自动添加前缀
+    - 压缩注意事项
+  - js优化
+    - 代码分离：手动配置多入口、抽取公共代码、懒加载、SplitChunksPlugin参数详解
+    - noParse
+    - IgnorePlugin
+    - DllPlugin：将固定库抽取成动态链接库节省资源
+  - 多进程打包
+  - 浏览器缓存
+  - 打包分析
+  - Prefetching
+- webpack原理
+  - 分析bundle文件
+  - 手写基础的webpack
+  - 利用AST完成代码转译
+  - 手写loader并给自己的webpack添加loader功能
+  - webpack中tapable的应用
+  - 手写plugin并给自己的webpack添加plugin功能
+
+学习不是百米冲刺，而是一场马拉松，现在所学只是起点，更多的是需要大家找到学习方法，不断的学习提升自己，一起加油！
