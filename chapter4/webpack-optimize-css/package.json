@@ -53,6 +53,6 @@
     "axios": "^0.18.0",
     "bootstrap": "^3.4.1",
     "html-withimg-loader": "^0.1.16",
-    "jquery": "^3.4.1"
+    "jquery": "^3.5.0"
   }
 }
