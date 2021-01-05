@@ -50,7 +50,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
     "@babel/runtime": "^7.4.4",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "bootstrap": "^3.4.1",
     "html-withimg-loader": "^0.1.16",
     "jquery": "^3.4.1"
